@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import uuid from "react-uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import Layout from "../shared/components/Layout";
@@ -12,7 +13,7 @@ import {
 } from "@mui/material";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem } from "../store/actions/itemActions";
+import { deleteItem, fetchItems } from "../store/actions/itemActions";
 
 const useStyles = makeStyles({
   root: {
@@ -28,7 +29,21 @@ const useStyles = makeStyles({
 const Dashboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  // const [items, setItems] = useState([]);
+  // // const { loading, error } = useSelector((state) => state.item);
+
+  // useEffect(() => {
+  //   dispatch(fetchItems()).then((res) => {
+  //     setItems(res.data);
+  //   });
+  // }, [dispatch]);
+
   const items = useSelector((state) => state.item.items);
+  useEffect(() => {
+    if (!items.length) {
+      dispatch(fetchItems());
+    }
+  }, [dispatch, items]);
 
   const deleteExistItem = (id) => {
     dispatch(deleteItem(id, true));

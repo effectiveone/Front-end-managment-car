@@ -16,7 +16,7 @@ export const DELETE_ITEM_START = "DELETE_ITEM_START";
 export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS";
 export const DELETE_ITEM_FAILURE = "DELETE_ITEM_FAILURE";
 
-// const token = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
 // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 // const config = {
@@ -25,16 +25,14 @@ export const DELETE_ITEM_FAILURE = "DELETE_ITEM_FAILURE";
 //   },
 // };
 
-export const fetchItems = () => (dispatch) => {
+export const fetchItems = () => async (dispatch) => {
   dispatch({ type: FETCH_ITEMS_START });
-  axios
-    .get("http://localhost:5002/api/auth")
-    .then((res) => {
-      dispatch({ type: FETCH_ITEMS_SUCCESS, payload: res.data });
-    })
-    .catch((err) => {
-      dispatch({ type: FETCH_ITEMS_FAILURE, payload: err });
-    });
+  try {
+    const res = await axios.get("http://localhost:5002/api/auth");
+    dispatch({ type: FETCH_ITEMS_SUCCESS, payload: res.data });
+  } catch (err) {
+    dispatch({ type: FETCH_ITEMS_FAILURE, payload: err });
+  }
 };
 
 export const addItem = (item, isAdmin) => (dispatch) => {
