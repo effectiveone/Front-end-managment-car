@@ -11,21 +11,23 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-
+import { AiOutlineMenu } from "react-icons/ai";
+import { MdAccountCircle } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { getActions } from "../../store/actions/authActions";
 import { useHistory } from "react-router-dom";
 import * as ReactDOM from "react-dom";
 import Dropdown from "./Dropdown";
+import { useTheme } from "@mui/material/styles";
+import { useLocation } from "react-router-dom";
+import Drawer from "@material-ui/core/Drawer";
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: "calc(1em + ${theme.spacing(4)})",
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
@@ -34,7 +36,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Navbar() {
+export default function Navbar({
+  handleDrawerClose,
+  handleDrawerOpen,
+  open,
+  className,
+}) {
   let history = useHistory();
   const dispatch = useDispatch();
 
@@ -50,11 +57,11 @@ export default function Navbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const opendropdown = Boolean(anchorEl);
+  const id = opendropdown ? "simple-popover" : undefined;
 
   const inputElement = useRef();
-
+  console.log("className", className);
   return (
     <div
       style={{
@@ -62,6 +69,7 @@ export default function Navbar() {
         justifyContent: "space-between",
         flexDirection: "row",
       }}
+      className={className}
     >
       <AppBar position="static">
         <Toolbar
@@ -73,6 +81,18 @@ export default function Navbar() {
           }}
         >
           <Box display="flex" alignItems="center">
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: "none" }),
+              }}
+            >
+              <AiOutlineMenu />
+            </IconButton>
             <Typography variant="h6" noWrap>
               My App
             </Typography>
@@ -86,11 +106,11 @@ export default function Navbar() {
               onClick={handleClick}
               color="inherit"
             >
-              <AccountCircle />
+              <MdAccountCircle />
             </IconButton>
             <Dropdown
               handleLogout={handleLogout}
-              open={open}
+              open={opendropdown}
               id={id}
               anchorEl={anchorEl}
               handleClose={handleClose}
