@@ -186,6 +186,7 @@ function Layout({ children }) {
                 <ListItemIcon>
                   <MdAddCircleOutline />
                 </ListItemIcon>
+                <ListItemText primary="Ev Station" />
               </ListItem>
             </List>
           </Drawer>
