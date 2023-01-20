@@ -110,6 +110,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Layout({ children }) {
   const user = useSelector((state) => state?.auth?.userDetails);
+  const localUser = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
   const classes = useStyles();
   const theme = useTheme();
@@ -124,11 +125,11 @@ function Layout({ children }) {
   const DrawerToogle = () => {
     setOpen(!open);
   };
-
+  console.log("localUser", localUser);
   return (
     <>
       <CssBaseline />
-      {user ? (
+      {user ?? localUser ? (
         <>
           <Drawer
             variant="permanent"
@@ -156,7 +157,7 @@ function Layout({ children }) {
             </div>
             <Divider />
             <List>
-              {user.isAdmin && (
+              {(user?.isAdmin ?? localUser?.isAdmin) && (
                 <>
                   <ListItem button component={Link} to="/addVehicle">
                     <ListItemIcon>
@@ -164,16 +165,31 @@ function Layout({ children }) {
                     </ListItemIcon>
                     <ListItemText primary="Add Car" />
                   </ListItem>
+                  <ListItem button component={Link} to="/AddNewTask">
+                    <ListItemIcon>
+                      <MdAddCircleOutline />
+                    </ListItemIcon>
+                    <ListItemText primary="Add task" />
+                  </ListItem>
                   <ListItem button component={Link} to="/AddNewAnnouncement">
                     <ListItemIcon>
                       <MdAddCircleOutline />
                     </ListItemIcon>
-                    <ListItemText primary="Add New Announcement" />
+                    <ListItemText primary="Add Announcement" />
                   </ListItem>
                 </>
               )}
             </List>
+            <Divider />
+            <List>
+              <ListItem button component={Link} to="/MapWithEVStations">
+                <ListItemIcon>
+                  <MdAddCircleOutline />
+                </ListItemIcon>
+              </ListItem>
+            </List>
           </Drawer>
+
           <div
             className={clsx(classes.navbar, {
               [classes.navbarOpen]: !open,

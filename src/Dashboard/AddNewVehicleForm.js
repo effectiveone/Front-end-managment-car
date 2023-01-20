@@ -19,7 +19,10 @@ const AddNewVehicleForm = () => {
   const [rangeError, setRangeError] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const user = useSelector((state) => state.auth?.userDetails);
+  const localUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = user?.isAdmin ?? localUser?.isAdmin;
   const dispatch = useDispatch();
+  if (!user && !localUser) return;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,7 +54,7 @@ const AddNewVehicleForm = () => {
 
   return (
     <>
-      {user.isAdmin ? (
+      {currentUser ? (
         <>
           <Layout>
             <form onSubmit={handleSubmit}>

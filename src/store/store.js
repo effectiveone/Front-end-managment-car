@@ -6,9 +6,11 @@ import authReducer from "./reducers/authReducer";
 import alertReducer from "./reducers/alertReducer";
 import itemsReducer from "./reducers/itemReducer";
 import annoucmentReducer from "./reducers/announcementReducer";
+import taskReducer from "./reducers/taskReducer";
 
 const rootReducer = combineReducers({
   annoucment: annoucmentReducer,
+  task: taskReducer,
   item: itemsReducer,
   auth: authReducer,
   alert: alertReducer,

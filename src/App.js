@@ -10,6 +10,9 @@ import RegisterPage from "./authPages/RegisterPage/RegisterPage";
 import Dashboard from "./Dashboard/Dashboard";
 import AddNewVehicleForm from "./Dashboard/AddNewVehicleForm";
 import AddNewAnnouncement from "./Dashboard/AddNewAnnouncement";
+import AddNewTask from "./Dashboard/AddNewTask";
+import MapWithEVStations from "./Dashboard/MapWithEVStations";
+
 import AlertNotification from "./shared/components/AlertNotification";
 import "./App.css";
 
@@ -32,6 +35,12 @@ function App() {
           </Route>
           <Route exact path="/AddNewAnnouncement">
             <AddNewAnnouncement />
+          </Route>
+          <Route exact path="/AddNewTask">
+            <AddNewTask />
+          </Route>
+          <Route exact path="/MapWithEVStations">
+            <MapWithEVStations />
           </Route>
           <Route path="/">
             <Redirect to="/dashboard" />

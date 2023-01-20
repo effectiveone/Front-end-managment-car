@@ -83,3 +83,38 @@ export const validateAnnouncementForm = ({ title, description }) => {
     isValid,
   };
 };
+export const validateTaskForm = ({ title, description, time, coinsToEarn }) => {
+  let errors = {};
+  let isValid = true;
+
+  if (!title) {
+    isValid = false;
+    errors.title = "Title is required";
+  } else if (title.length < 5) {
+    isValid = false;
+    errors.title = "Title must be at least 5 characters long";
+  }
+
+  if (!description) {
+    isValid = false;
+    errors.description = "Description is required";
+  } else if (description.length < 10) {
+    isValid = false;
+    errors.description = "Description must be at least 10 characters long";
+  }
+
+  if (!time) {
+    isValid = false;
+    errors.time = "Time is required";
+  }
+
+  if (!coinsToEarn) {
+    isValid = false;
+    errors.coinsToEarn = "Coins to earn is required";
+  }
+
+  return {
+    errors,
+    isValid,
+  };
+};
