@@ -1,0 +1,23 @@
+.ArrowWrapper{
+    background: rgba(0, 0, 0, 0.73);
+    height: 24px;
+    width: 24px;
+    left: 0;
+    top: 0;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+  
+  
+    .ArrowWrapper svg:focus {
+      outline: 0;
+    }
+    .ArrowWrapper:hover {
+      transition: 250ms linear;
+      transform: scale(1.1);
+    }
