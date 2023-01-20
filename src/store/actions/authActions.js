@@ -4,6 +4,7 @@ import axios from "axios";
 
 export const authActions = {
   SET_USER_DETAILS: "AUTH.SET_USER_DETAILS",
+  UPDATE_USER: "UPDATE_USER",
 };
 
 export const getActions = (dispatch) => {
@@ -12,6 +13,7 @@ export const getActions = (dispatch) => {
     register: (userDetails, history) =>
       dispatch(register(userDetails, history)),
     logout: () => dispatch(logout()),
+    updateUser: (user) => dispatch(updateUser(user)),
   };
 };
 
@@ -64,5 +66,12 @@ const register = (userDetails, history) => {
       dispatch(setUserDetails(userDetails));
       history.push("/dashboard");
     }
+  };
+};
+
+export const updateUser = (user) => {
+  return {
+    type: authActions.UPDATE_USER,
+    user,
   };
 };

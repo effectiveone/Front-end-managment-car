@@ -16,6 +16,7 @@ import styled from "@material-ui/styles/styled";
 import { Container, CssBaseline } from "@material-ui/core";
 import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
+import { inHTMLData } from "xss-filters";
 
 const drawerWidth = 300;
 
@@ -125,7 +126,12 @@ function Layout({ children }) {
   const DrawerToogle = () => {
     setOpen(!open);
   };
-  console.log("localUser", localUser);
+
+  const sanitizedUrlVehicle = inHTMLData("/addVehicle");
+  const sanitizedUrlTask = inHTMLData("/AddNewTask");
+  const sanitizedUrlAnnouncement = inHTMLData("/AddNewAnnouncement");
+  const sanitizedUrlMapWithEVStations = inHTMLData("/MapWithEVStations");
+
   return (
     <>
       <CssBaseline />
@@ -159,19 +165,23 @@ function Layout({ children }) {
             <List>
               {(user?.isAdmin ?? localUser?.isAdmin) && (
                 <>
-                  <ListItem button component={Link} to="/addVehicle">
+                  <ListItem button component={Link} to={sanitizedUrlVehicle}>
                     <ListItemIcon>
                       <MdAddCircleOutline />
                     </ListItemIcon>
                     <ListItemText primary="Add Car" />
                   </ListItem>
-                  <ListItem button component={Link} to="/AddNewTask">
+                  <ListItem button component={Link} to={sanitizedUrlTask}>
                     <ListItemIcon>
                       <MdAddCircleOutline />
                     </ListItemIcon>
                     <ListItemText primary="Add task" />
                   </ListItem>
-                  <ListItem button component={Link} to="/AddNewAnnouncement">
+                  <ListItem
+                    button
+                    component={Link}
+                    to={sanitizedUrlAnnouncement}
+                  >
                     <ListItemIcon>
                       <MdAddCircleOutline />
                     </ListItemIcon>

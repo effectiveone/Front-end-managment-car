@@ -33,13 +33,13 @@ const useStyles = makeStyles({
   rightArrow: {
     position: "absolute",
     bottom: "10px",
-    right: "50px",
+    right: "0px",
     zIndex: 2,
   },
   leftArrow: {
     position: "absolute",
     bottom: "10px",
-    right: "-50px",
+    right: "25px",
     zIndex: 3,
   },
 });
@@ -94,25 +94,18 @@ const TaskCardList = () => {
           </Grid>
         ))}
       </Grid>
-      {/* {currentCard < tasks.length - 3 && ( */}
-      <div className={classes.rightArrow}>
-        {" "}
-        <SliderArrows
-          direction={"right"}
-          // opacity={currentCard !== tasks.length - 1 ? 1 : 0}
-          handleClick={handleNext}
-        />
-      </div>
-      {/* )} */}
-      {/* {currentCard > 0 && ( */}
-      <div className={classes.leftArrow}>
-        <SliderArrows
-          direction={"left"}
-          opacity={currentCard !== 0 ? 1 : 0}
-          handleClick={handlePrevious}
-        />
-      </div>
-      {/* )} */}
+      <Grid container>
+        {/* {currentCard < tasks.length - 3 && ( */}
+        <Grid item className={classes.rightArrow}>
+          <SliderArrows direction={"right"} handleClick={handleNext} />
+        </Grid>
+        {/* )} */}
+        {/* {currentCard > 0 && ( */}
+        <Grid item className={classes.leftArrow}>
+          <SliderArrows direction={"left"} handleClick={handlePrevious} />
+        </Grid>
+        {/* )} */}
+      </Grid>
     </Grid>
   );
 };

@@ -12,8 +12,9 @@ import AddNewVehicleForm from "./Dashboard/AddNewVehicleForm";
 import AddNewAnnouncement from "./Dashboard/AddNewAnnouncement";
 import AddNewTask from "./Dashboard/AddNewTask";
 import MapWithEVStations from "./Dashboard/MapWithEVStations";
-
 import AlertNotification from "./shared/components/AlertNotification";
+import EditUser from "./Dashboard/EditUser";
+
 import "./App.css";
 
 function App() {
@@ -41,6 +42,9 @@ function App() {
           </Route>
           <Route exact path="/MapWithEVStations">
             <MapWithEVStations />
+          </Route>
+          <Route exact path="/EditUser">
+            <EditUser />
           </Route>
           <Route path="/">
             <Redirect to="/dashboard" />
