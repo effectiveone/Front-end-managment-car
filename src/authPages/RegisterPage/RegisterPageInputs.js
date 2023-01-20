@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import InputWithLabel from "../../shared/components/InputWithLabel";
 
 const RegisterPageInputs = (props) => {
   const { mail, setMail, username, setUsername, password, setPassword } = props;
+  const [error, setError] = useState();
 
   return (
     <>
@@ -12,6 +13,8 @@ const RegisterPageInputs = (props) => {
         label="E-mail address"
         type="text"
         placeholder="Enter e-mail address"
+        error={error}
+        setError={setError}
       />
       <InputWithLabel
         value={username}
@@ -19,6 +22,8 @@ const RegisterPageInputs = (props) => {
         label="Username"
         type="text"
         placeholder="Enter a username"
+        error={error}
+        setError={setError}
       />
       <InputWithLabel
         value={password}
@@ -26,6 +31,8 @@ const RegisterPageInputs = (props) => {
         label="Password"
         type="password"
         placeholder="Enter password"
+        error={error}
+        setError={setError}
       />
     </>
   );

@@ -8,6 +8,7 @@ const AlertNotification = ({
   showAlertMessage,
   closeAlertMessage,
   alertMessageContent,
+  typeOfAlert,
 }) => {
   return (
     <Snackbar
@@ -16,7 +17,7 @@ const AlertNotification = ({
       onClose={closeAlertMessage}
       autoHideDuration={6000}
     >
-      <Alert severity="info">{alertMessageContent}</Alert>
+      <Alert severity={typeOfAlert}>{alertMessageContent}</Alert>
     </Snackbar>
   );
 };

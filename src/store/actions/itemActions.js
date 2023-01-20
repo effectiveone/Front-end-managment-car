@@ -1,4 +1,5 @@
 import axios from "axios";
+import { openAlertMessage } from "./alertActions";
 
 export const FETCH_ITEMS_START = "FETCH_ITEMS_START";
 export const FETCH_ITEMS_SUCCESS = "FETCH_ITEMS_SUCCESS";
@@ -16,15 +17,6 @@ export const DELETE_ITEM_START = "DELETE_ITEM_START";
 export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS";
 export const DELETE_ITEM_FAILURE = "DELETE_ITEM_FAILURE";
 
-const token = localStorage.getItem("token");
-
-// axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-// const config = {
-//   headers: {
-//     Authorization: `Bearer ${token}`,
-//   },
-// };
-
 export const fetchItems = () => async (dispatch) => {
   dispatch({ type: FETCH_ITEMS_START });
   try {
@@ -35,16 +27,21 @@ export const fetchItems = () => async (dispatch) => {
   }
 };
 
-export const addItem = (item, isAdmin) => (dispatch) => {
+export const addItem = (item, user) => (dispatch) => {
+  const { isAdmin, token } = user;
   if (!isAdmin) return;
+  console.log("working");
   dispatch({ type: ADD_ITEM_START });
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   axios
-    .post("http://localhost:5002/api/auth/", item)
+    .post("http://localhost:5002/api/auth/add", item, token)
     .then((res) => {
       dispatch({ type: ADD_ITEM_SUCCESS, payload: res.data });
+      dispatch(openAlertMessage(res.data));
     })
     .catch((err) => {
       dispatch({ type: ADD_ITEM_FAILURE, payload: err });
+      dispatch(openAlertMessage(err));
     });
 };
 

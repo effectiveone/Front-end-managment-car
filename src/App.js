@@ -8,8 +8,9 @@ import {
 import LoginPage from "./authPages/LoginPage/LoginPage";
 import RegisterPage from "./authPages/RegisterPage/RegisterPage";
 import Dashboard from "./Dashboard/Dashboard";
+import AddNewVehicleForm from "./Dashboard/AddNewVehicleForm";
+import AddNewAnnouncement from "./Dashboard/AddNewAnnouncement";
 import AlertNotification from "./shared/components/AlertNotification";
-
 import "./App.css";
 
 function App() {
@@ -26,12 +27,18 @@ function App() {
           <Route exact path="/dashboard">
             <Dashboard />
           </Route>
+          <Route exact path="/addVehicle">
+            <AddNewVehicleForm />
+          </Route>
+          <Route exact path="/AddNewAnnouncement">
+            <AddNewAnnouncement />
+          </Route>
           <Route path="/">
             <Redirect to="/dashboard" />
           </Route>
         </Switch>
       </Router>
-      <AlertNotification />
+      <AlertNotification typeOfAlert="info" />
     </>
   );
 }

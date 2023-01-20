@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/system";
+import { Alert, AlertTitle } from "@mui/material";
 
 const Wrapper = styled("div")({
   display: "flex",
@@ -28,11 +29,23 @@ const Input = styled("input")({
 });
 
 const InputWithLabel = (props) => {
-  const { value, setValue, label, type, placeholder } = props;
+  const { value, setValue, label, type, placeholder, isFormValid } = props;
+  const { error, setError } = props;
 
   const handleValueChange = (event) => {
     setValue(event.target.value);
+    setError(null);
   };
+
+  useEffect(() => {
+    let timer1 = setTimeout(() => {
+      setError(false);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer1);
+    };
+  }, [error]);
 
   return (
     <Wrapper>
@@ -43,6 +56,12 @@ const InputWithLabel = (props) => {
         type={type}
         placeholder={placeholder}
       />
+      {error && (
+        <Alert severity="warning" variant="outlined">
+          <AlertTitle>Warning</AlertTitle>
+          <strong>{error}</strong>
+        </Alert>
+      )}
     </Wrapper>
   );
 };

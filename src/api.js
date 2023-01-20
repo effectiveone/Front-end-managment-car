@@ -7,18 +7,19 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use(
-  (config) => {
-    const userDetails = localStorage.getItem("user");
+  async (config) => {
+    // Attempt to get the token from local storage
+    const token = localStorage.getItem("token");
 
-    if (userDetails) {
-      const token = JSON.parse(userDetails).token;
+    // If the token exists, add it to the headers
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
   },
-  (err) => {
-    return Promise.reject(err);
+  (error) => {
+    return Promise.reject(error);
   }
 );
 
@@ -28,6 +29,7 @@ export const login = async (data) => {
   try {
     return await apiClient.post("/auth/login", data);
   } catch (exception) {
+    console.log("exception", exception);
     return {
       error: true,
       exception,

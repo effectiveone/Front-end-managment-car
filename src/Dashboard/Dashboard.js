@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
+import { Grid } from "@mui/material";
+import ShareBox from "../shared/components/ShareBox";
+import AnnoucmentBox from "../shared/components/AnnoucmentBox";
 import uuid from "react-uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import Layout from "../shared/components/Layout";
@@ -29,16 +31,9 @@ const useStyles = makeStyles({
 const Dashboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const [items, setItems] = useState([]);
-  // // const { loading, error } = useSelector((state) => state.item);
-
-  // useEffect(() => {
-  //   dispatch(fetchItems()).then((res) => {
-  //     setItems(res.data);
-  //   });
-  // }, [dispatch]);
 
   const items = useSelector((state) => state.item.items);
+  const userAdmin = useSelector((state) => state.auth?.userDetails?.isAdmin);
   useEffect(() => {
     if (!items.length) {
       dispatch(fetchItems());
@@ -52,6 +47,22 @@ const Dashboard = () => {
   return (
     <>
       <Layout>
+        <Grid container rowSpacing={2} columnSpacing={2}>
+          <Grid item lg={3} sm={6} xl={3} xs={12}>
+            <ShareBox />
+          </Grid>
+          <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <ShareBox />
+          </Grid>
+          <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <ShareBox />
+          </Grid>
+
+          <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <ShareBox />
+          </Grid>
+        </Grid>
+        <AnnoucmentBox />
         <Paper className={classes.root}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -61,7 +72,7 @@ const Dashboard = () => {
                 <TableCell>Range</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Book</TableCell>
-                <TableCell>Delete</TableCell>
+                {userAdmin && <TableCell>Delete</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -74,12 +85,16 @@ const Dashboard = () => {
                   <TableCell>
                     <button>Book</button>
                   </TableCell>
-                  <TableCell>
-                    <div onClick={() => deleteExistItem(item.id)}>
-                      <RiDeleteBin5Line />
-                    </div>
-                    ;
-                  </TableCell>
+                  {userAdmin && (
+                    <>
+                      {" "}
+                      <TableCell>
+                        <div onClick={() => deleteExistItem(item.id)}>
+                          <RiDeleteBin5Line />
+                        </div>
+                      </TableCell>{" "}
+                    </>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
