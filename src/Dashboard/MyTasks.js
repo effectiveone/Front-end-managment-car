@@ -50,12 +50,16 @@ function MyTasks() {
   const user = useSelector((state) => state.auth.user);
   const localUser = JSON.parse(localStorage.getItem("user"));
   const { mail } = localUser;
-  const currentUser = user ?? localUser;
+  const [currentCard, setCurrentCard] = useState([]);
   useEffect(() => {
     // if (!tasks?.tasks?.length) {
     dispatch(fetchMyTasks(localUser.mail));
     // }
   }, []);
+
+  useEffect(() => {
+    setCurrentCard(tasks?.tasks);
+  }, [tasks, dispatch]);
 
   const handleUpdateTask = (_id, responsivePerson, status) => {
     dispatch(updateTask(_id, responsivePerson, status));
