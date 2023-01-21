@@ -198,6 +198,12 @@ function Layout({ children }) {
                 </ListItemIcon>
                 <ListItemText primary="Ev Station" />
               </ListItem>
+              <ListItem button component={Link} to="/MyTasks">
+                <ListItemIcon>
+                  <MdAddCircleOutline />
+                </ListItemIcon>
+                <ListItemText primary="My Tasks" />
+              </ListItem>
             </List>
           </Drawer>
 

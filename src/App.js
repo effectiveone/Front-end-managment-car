@@ -14,6 +14,7 @@ import AddNewTask from "./Dashboard/AddNewTask";
 import MapWithEVStations from "./Dashboard/MapWithEVStations";
 import AlertNotification from "./shared/components/AlertNotification";
 import EditUser from "./Dashboard/EditUser";
+import MyTasks from "./Dashboard/MyTasks";
 
 import "./App.css";
 
@@ -45,6 +46,9 @@ function App() {
           </Route>
           <Route exact path="/EditUser">
             <EditUser />
+          </Route>
+          <Route exact path="/MyTasks">
+            <MyTasks />
           </Route>
           <Route path="/">
             <Redirect to="/dashboard" />

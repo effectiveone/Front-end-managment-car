@@ -7,13 +7,15 @@ import alertReducer from "./reducers/alertReducer";
 import itemsReducer from "./reducers/itemReducer";
 import annoucmentReducer from "./reducers/announcementReducer";
 import taskReducer from "./reducers/taskReducer";
+import walletReducer from "./reducers/walletReducers";
 
 const rootReducer = combineReducers({
-  annoucment: annoucmentReducer,
-  task: taskReducer,
-  item: itemsReducer,
-  auth: authReducer,
   alert: alertReducer,
+  annoucment: annoucmentReducer,
+  auth: authReducer,
+  item: itemsReducer,
+  task: taskReducer,
+  wallet: walletReducer,
 });
 
 const store = createStore(
