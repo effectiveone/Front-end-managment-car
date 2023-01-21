@@ -7,8 +7,11 @@ import Layout from "../shared/components/Layout";
 const EditUser = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [usernameError, setUsernameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const [passwordConfirmationError, setPasswordConfirmationError] =
+    useState(null);
   const user = useSelector((state) => state.auth?.userDetails);
   const localUser = JSON.parse(localStorage.getItem("user"));
 
@@ -19,13 +22,26 @@ const EditUser = () => {
     event.preventDefault();
     setUsernameError(null);
     setPasswordError(null);
+    setPasswordConfirmationError(null);
     if (!username) {
       setUsernameError("Username is required");
     }
     if (!password) {
       setPasswordError("Password is required");
     }
-    if (username && password) {
+    if (!passwordConfirmation) {
+      setPasswordConfirmationError("Password confirmation is required");
+    }
+    if (password !== passwordConfirmation) {
+      setPasswordError("Passwords do not match");
+      setPasswordConfirmationError("Passwords do not match");
+    }
+    if (
+      username &&
+      password &&
+      passwordConfirmation &&
+      password === passwordConfirmation
+    ) {
       const updatedUser = {
         ...user,
         username,
@@ -54,6 +70,15 @@ const EditUser = () => {
             error={passwordError}
             setError={setPasswordError}
             placeholder="Enter your new password"
+            type="password"
+          />
+          <InputWithLabel
+            label="Password Confirmation"
+            value={passwordConfirmation}
+            setValue={setPasswordConfirmation}
+            error={passwordConfirmationError}
+            setError={setPasswordConfirmationError}
+            placeholder="Confirm your new password"
             type="password"
           />
           <button type="submit">Save changes</button>

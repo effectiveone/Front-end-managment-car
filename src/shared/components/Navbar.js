@@ -13,14 +13,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { AiOutlineMenu } from "react-icons/ai";
 import { MdAccountCircle } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getActions } from "../../store/actions/authActions";
-import { useHistory } from "react-router-dom";
-import * as ReactDOM from "react-dom";
+import { useHistory, Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
-import { useTheme } from "@mui/material/styles";
-import { useLocation } from "react-router-dom";
-import Drawer from "@material-ui/core/Drawer";
+import { inHTMLData } from "xss-filters";
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -44,7 +41,9 @@ export default function Navbar({
 }) {
   let history = useHistory();
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.auth?.userDetails);
+  const localUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = user ?? localUser;
   const { logout } = getActions(dispatch);
   const handleLogout = () => {
     logout();
@@ -61,7 +60,9 @@ export default function Navbar({
   const id = opendropdown ? "simple-popover" : undefined;
 
   const inputElement = useRef();
-  console.log("className", className);
+
+  const sanitizedUrlDashboard = inHTMLData("/dashboard");
+
   return (
     <div
       style={{
@@ -93,11 +94,18 @@ export default function Navbar({
             >
               <AiOutlineMenu />
             </IconButton>
-            <Typography variant="h6" noWrap>
+
+            <Typography
+              component={Link}
+              to={sanitizedUrlDashboard}
+              variant="h6"
+              noWrap
+            >
               My App
             </Typography>
           </Box>
           <Box display="flex" alignItems="center">
+            Witaj, {currentUser?.username}
             <IconButton
               ref={inputElement}
               aria-label="account of current user"
