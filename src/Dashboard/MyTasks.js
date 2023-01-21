@@ -1,38 +1,10 @@
-import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import uuid from "react-uuid";
 import Layout from "../shared/components/Layout";
+import React, { useEffect, useState } from "react";
 
-const itemsFromBackend = [
-  { id: uuid(), content: "First task" },
-  { id: uuid(), content: "Second task" },
-  { id: uuid(), content: "Third task" },
-  { id: uuid(), content: "Fourth task" },
-  { id: uuid(), content: "Fifth task" },
-];
-
-const columnList = {
-  [uuid()]: {
-    name: "Requested",
-    background: "green",
-    items: itemsFromBackend,
-  },
-  [uuid()]: {
-    name: "To do",
-    background: "red",
-    items: [],
-  },
-  [uuid()]: {
-    name: "In Progress",
-    background: "blue",
-    items: [],
-  },
-  [uuid()]: {
-    name: "Done",
-    background: "purple",
-    items: [],
-  },
-};
+import { useDispatch, useSelector } from "react-redux";
+import { updateTask, fetchMyTasks } from "../store/actions/taskActions";
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -72,7 +44,51 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 function MyTasks() {
-  const [columns, setColumns] = useState(columnList);
+  const dispatch = useDispatch();
+
+  const tasks = useSelector((state) => state.task?.myTasks);
+  const user = useSelector((state) => state.auth.user);
+  const localUser = JSON.parse(localStorage.getItem("user"));
+  const { mail } = localUser;
+  const currentUser = user ?? localUser;
+  useEffect(() => {
+    // if (!tasks?.tasks?.length) {
+    dispatch(fetchMyTasks(localUser.mail));
+    // }
+  }, []);
+
+  const handleUpdateTask = (_id, responsivePerson, status) => {
+    dispatch(updateTask(_id, responsivePerson, status));
+  };
+
+  useEffect(() => {
+    if (tasks?.tasks) {
+      setColumns({
+        [uuid()]: {
+          name: "Requested",
+          background: "green",
+          items: tasks.tasks,
+        },
+        [uuid()]: {
+          name: "To do",
+          background: "red",
+          items: [],
+        },
+        [uuid()]: {
+          name: "In Progress",
+          background: "blue",
+          items: [],
+        },
+        [uuid()]: {
+          name: "Done",
+          background: "purple",
+          items: [],
+        },
+      });
+    }
+  }, [tasks]);
+  const [columns, setColumns] = useState([]);
+
   return (
     <Layout>
       <div
@@ -86,7 +102,7 @@ function MyTasks() {
         <DragDropContext
           onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
         >
-          {Object.entries(columns).map(([columnId, column], index) => {
+          {Object.entries(columns)?.map(([columnId, column], index) => {
             return (
               <div
                 style={{
@@ -101,7 +117,7 @@ function MyTasks() {
               >
                 <h2>{column.name}</h2>
                 <div style={{ margin: 8 }}>
-                  <Droppable droppableId={columnId} key={columnId}>
+                  <Droppable droppableId={columnId}>
                     {(provided, snapshot) => {
                       return (
                         <div
@@ -116,12 +132,14 @@ function MyTasks() {
                             minHeight: 500,
                           }}
                         >
-                          {column.items.map((item, index) => {
+                          {column?.items?.map((item, index) => {
+                            const { _id, name } = item;
                             return (
                               <Draggable
-                                key={item.id}
-                                draggableId={item.id}
+                                key={uuid()}
+                                draggableId={item._id}
                                 index={index}
+                                onDrop={() => handleUpdateTask(_id, mail, name)}
                               >
                                 {(provided, snapshot) => {
                                   return (
@@ -141,7 +159,15 @@ function MyTasks() {
                                         ...provided.draggableProps.style,
                                       }}
                                     >
-                                      {item.content}
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          flexDirection: "column",
+                                        }}
+                                      >
+                                        <span> {item.title}</span>
+                                        <p> {item.description}</p>
+                                      </div>
                                     </div>
                                   );
                                 }}

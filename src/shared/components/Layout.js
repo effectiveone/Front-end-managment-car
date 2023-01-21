@@ -131,6 +131,8 @@ function Layout({ children }) {
   const sanitizedUrlTask = inHTMLData("/AddNewTask");
   const sanitizedUrlAnnouncement = inHTMLData("/AddNewAnnouncement");
   const sanitizedUrlMapWithEVStations = inHTMLData("/MapWithEVStations");
+  const sanitizedUrlAdminTaskTable = inHTMLData("/AdminTaskTable");
+  const sanitizedUrlMyTasks = inHTMLData("/MyTasks");
 
   return (
     <>
@@ -187,18 +189,32 @@ function Layout({ children }) {
                     </ListItemIcon>
                     <ListItemText primary="Add Announcement" />
                   </ListItem>
+                  <ListItem
+                    button
+                    component={Link}
+                    to={sanitizedUrlAdminTaskTable}
+                  >
+                    <ListItemIcon>
+                      <MdAddCircleOutline />
+                    </ListItemIcon>
+                    <ListItemText primary="Task inspection" />
+                  </ListItem>
                 </>
               )}
             </List>
             <Divider />
             <List>
-              <ListItem button component={Link} to="/MapWithEVStations">
+              <ListItem
+                button
+                component={Link}
+                to={sanitizedUrlMapWithEVStations}
+              >
                 <ListItemIcon>
                   <MdAddCircleOutline />
                 </ListItemIcon>
                 <ListItemText primary="Ev Station" />
               </ListItem>
-              <ListItem button component={Link} to="/MyTasks">
+              <ListItem button component={Link} to={sanitizedUrlMyTasks}>
                 <ListItemIcon>
                   <MdAddCircleOutline />
                 </ListItemIcon>

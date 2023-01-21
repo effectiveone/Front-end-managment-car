@@ -1,15 +1,37 @@
 import axios from "axios";
 import { openAlertMessage } from "./alertActions";
 
-export const FETCH_TASKS = "FETCH_TASKS";
 export const ADD_TASK = "ADD_TASK";
 export const UPDATE_TASK = "UPDATE_TASK";
 export const DELETE_TASK = "DELETE_TASK";
+export const FETCH_ALL_TASKS = "FETCH_ALL_TASKS";
+export const FETCH_MY_TASKS = "FETCH_MY_TASKS";
+export const FETCH_BACKLOG_TASKS = "FETCH_BACKLOG_TASKS";
+export const UPDATE_TASK_SUCCESS = "UPDATE_TASK_SUCCESS";
+export const UPDATE_TASK_FAILURE = "UPDATE_TASK_FAILURE";
 
-export const fetchTasks = () => async (dispatch) => {
+export const fetchAllTasks = () => async (dispatch) => {
   const res = await axios.get("http://localhost:5002/api/auth/tasks");
   dispatch({
-    type: FETCH_TASKS,
+    type: FETCH_ALL_TASKS,
+    payload: res.data,
+  });
+};
+
+export const fetchMyTasks = (mail) => async (dispatch) => {
+  const res = await axios.get(
+    `http://localhost:5002/api/auth/getMyTasks?email=${mail}`
+  );
+  dispatch({
+    type: FETCH_MY_TASKS,
+    payload: res.data,
+  });
+};
+
+export const fetchBacklogTasks = () => async (dispatch) => {
+  const res = await axios.get("http://localhost:5002/api/auth/getBacklogTasks");
+  dispatch({
+    type: FETCH_BACKLOG_TASKS,
     payload: res.data,
   });
 };
@@ -35,15 +57,18 @@ export const addTask = (taskData, user) => async (dispatch) => {
   }
 };
 
-export const updateTask = (taskData) => async (dispatch) => {
-  const res = await axios.patch(
-    "http://localhost:5002/api/auth/tasks",
-    taskData
-  );
-  dispatch({
-    type: UPDATE_TASK,
-    payload: res.data,
-  });
+export const updateTask = (id, responsivePerson, status) => (dispatch) => {
+  axios
+    .put(`http://localhost:5002/api/auth/tasks/${id}`, {
+      responsivePerson,
+      status,
+    })
+    .then((res) => {
+      dispatch({ type: UPDATE_TASK_SUCCESS, payload: res.data });
+    })
+    .catch((err) => {
+      dispatch({ type: UPDATE_TASK_FAILURE, payload: err });
+    });
 };
 
 export const deleteTask = (id) => async (dispatch) => {

@@ -105,7 +105,7 @@ export default function Navbar({
             </Typography>
           </Box>
           <Box display="flex" alignItems="center">
-            Witaj, {currentUser?.username}
+            Welcome, {currentUser?.username}
             <IconButton
               ref={inputElement}
               aria-label="account of current user"

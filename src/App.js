@@ -5,9 +5,12 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+
 import LoginPage from "./authPages/LoginPage/LoginPage";
 import RegisterPage from "./authPages/RegisterPage/RegisterPage";
 import Dashboard from "./Dashboard/Dashboard";
+import AdminTaskTable from "./Dashboard/AdminTaskTable";
+
 import AddNewVehicleForm from "./Dashboard/AddNewVehicleForm";
 import AddNewAnnouncement from "./Dashboard/AddNewAnnouncement";
 import AddNewTask from "./Dashboard/AddNewTask";
@@ -49,6 +52,9 @@ function App() {
           </Route>
           <Route exact path="/MyTasks">
             <MyTasks />
+          </Route>
+          <Route exact path="/AdminTaskTable">
+            <AdminTaskTable />
           </Route>
           <Route path="/">
             <Redirect to="/dashboard" />
