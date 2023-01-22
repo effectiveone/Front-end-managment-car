@@ -2,13 +2,32 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import uuid from "react-uuid";
 import Layout from "../shared/components/Layout";
 import React, { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { updateTask, fetchMyTasks } from "../store/actions/taskActions";
+import { addCoins } from "../store/actions/walletActions";
 
-const onDragEnd = (result, columns, setColumns) => {
+const onDragEnd = (
+  result,
+  columns,
+  setColumns,
+  handleUpdateTask,
+  handleGrantBonus,
+  mail,
+  token,
+  tasks
+) => {
+  console.log("columns", columns);
   if (!result.destination) return;
-  const { source, destination } = result;
+  const { source, destination, draggableId } = result;
+  handleUpdateTask(draggableId, mail, destination.droppableId);
+
+  if (destination.droppableId === "Done") {
+    const coins = tasks.tasks?.find(
+      ({ _id }) => _id === draggableId
+    ).coinsToEarn;
+
+    handleGrantBonus(coins, mail, token);
+  }
 
   if (source.droppableId !== destination.droppableId) {
     const sourceColumn = columns[source.droppableId];
@@ -48,8 +67,9 @@ function MyTasks() {
 
   const tasks = useSelector((state) => state.task?.myTasks);
   const user = useSelector((state) => state.auth.user);
+
   const localUser = JSON.parse(localStorage.getItem("user"));
-  const { mail } = localUser;
+  const { mail, token } = localUser;
   const [currentCard, setCurrentCard] = useState([]);
   useEffect(() => {
     // if (!tasks?.tasks?.length) {
@@ -65,28 +85,32 @@ function MyTasks() {
     dispatch(updateTask(_id, responsivePerson, status));
   };
 
+  const handleGrantBonus = (coins, mail, token) => {
+    dispatch(addCoins(coins, mail, token));
+  };
+
   useEffect(() => {
     if (tasks?.tasks) {
       setColumns({
-        [uuid()]: {
+        ["Requested"]: {
           name: "Requested",
           background: "green",
-          items: tasks.tasks,
+          items: tasks.tasks.filter((p) => p.status === "Requested"),
         },
-        [uuid()]: {
+        ["To do"]: {
           name: "To do",
           background: "red",
-          items: [],
+          items: tasks.tasks.filter((p) => p.status === "To do"),
         },
-        [uuid()]: {
+        ["In Progress"]: {
           name: "In Progress",
           background: "blue",
-          items: [],
+          items: tasks.tasks.filter((p) => p.status === "In Progress"),
         },
-        [uuid()]: {
+        ["Done"]: {
           name: "Done",
           background: "purple",
-          items: [],
+          items: tasks.tasks.filter((p) => p.status === "Done"),
         },
       });
     }
@@ -104,7 +128,18 @@ function MyTasks() {
         }}
       >
         <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+          onDragEnd={(result) =>
+            onDragEnd(
+              result,
+              columns,
+              setColumns,
+              handleUpdateTask,
+              handleGrantBonus,
+              mail,
+              token,
+              tasks
+            )
+          }
         >
           {Object.entries(columns)?.map(([columnId, column], index) => {
             return (
@@ -137,13 +172,11 @@ function MyTasks() {
                           }}
                         >
                           {column?.items?.map((item, index) => {
-                            const { _id, name } = item;
                             return (
                               <Draggable
                                 key={uuid()}
                                 draggableId={item._id}
                                 index={index}
-                                onDrop={() => handleUpdateTask(_id, mail, name)}
                               >
                                 {(provided, snapshot) => {
                                   return (
