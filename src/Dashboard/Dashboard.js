@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Layout from "../shared/components/Layout";
 
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem, fetchItems } from "../store/actions/itemActions";
+import { deleteItem, fetchAllCars } from "../store/actions/itemActions";
 
 import AnnoucmentBox from "../shared/components/AnnoucmentBox";
 import TaskCardList from "../shared/components/TaskCardLis";
@@ -23,13 +23,14 @@ const Dashboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const items = useSelector((state) => state.item.items);
+  const items = useSelector((state) => state.item.cars);
   useEffect(() => {
-    if (!items.length) {
-      dispatch(fetchItems());
+    if (!items?.length) {
+      dispatch(fetchAllCars());
     }
   }, [dispatch, items]);
 
+  console.log("items", items);
   const deleteExistItem = (id) => {
     dispatch(deleteItem(id, true));
   };

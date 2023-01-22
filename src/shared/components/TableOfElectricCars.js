@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem, fetchItems } from "../../store/actions/itemActions";
+import { deleteItem, fetchAllCars } from "../../store/actions/itemActions";
 import TransitionsModal from "./TransitionsModal";
 
 const useStyles = makeStyles({
@@ -27,13 +27,13 @@ const useStyles = makeStyles({
 function TableOfElectricCars() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
-  const items = useSelector((state) => state.item.items);
+  const items = useSelector((state) => state.item.cars);
   const userAdmin = useSelector((state) => state.auth?.userDetails?.isAdmin);
   useEffect(() => {
-    if (!items.length) {
-      dispatch(fetchItems());
+    if (!items?.length) {
+      dispatch(fetchAllCars());
     }
   }, [dispatch, items]);
 
