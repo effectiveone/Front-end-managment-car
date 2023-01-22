@@ -3,15 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Layout from "../shared/components/Layout";
 import EVStationCard from "../shared/components/EVStationCard";
-import {
-  Grid,
-  Paper,
-  makeStyles,
-  Typography,
-  Button,
-  IconButton,
-  Box,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,7 +71,6 @@ const MapWithEVStations = () => {
           const apiUrl = `https://api.openchargemap.io/v3/poi/?output=json&countrycode=PL&maxresults=50&key=${apiKey}`;
           const response = await fetch(apiUrl);
           const data = await response.json();
-          console.log("data", data);
           return data;
         };
         const addMarkersToMap = (stations) => {
@@ -111,7 +102,6 @@ const MapWithEVStations = () => {
       const response = await fetch(apiUrl);
       const data = await response.json();
       setEvChargeStations(data);
-      console.log("data", data);
       return data;
     };
     const addMarkersToMap = (stations) => {

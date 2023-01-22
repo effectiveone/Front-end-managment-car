@@ -29,8 +29,6 @@ function Dropdown({ handleLogout, open, id, anchorEl, handleClose }) {
   const sanitizedUrl = inHTMLData("/editUser");
   const classes = useStyles();
   const currentUserCoins = useSelector((state) => state.wallet.coins);
-  console.log("currentUserCoins", currentUserCoins);
-  const user = useSelector((state) => state.auth.user);
   const localUser = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     // if (!tasks?.tasks?.length) {
@@ -45,7 +43,7 @@ function Dropdown({ handleLogout, open, id, anchorEl, handleClose }) {
       keepMounted
       open={open}
       onClose={handleClose}
-      getContentAnchorEl={null}
+      PaperProps={{ square: true }}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "center",

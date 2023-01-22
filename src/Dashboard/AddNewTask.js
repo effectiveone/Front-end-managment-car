@@ -17,7 +17,6 @@ const AddNewTask = () => {
   const [descriptionError, setDescriptionError] = useState(null);
   const [timeError, setTimeError] = useState(null);
   const [coinsToEarnError, setCoinsToEarnError] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
   const user = useSelector((state) => state.auth?.userDetails);
   const localUser = JSON.parse(localStorage.getItem("user"));
   const currentUser = user ?? localUser;
@@ -44,7 +43,6 @@ const AddNewTask = () => {
 
     if (isFormValid) {
       dispatch(addTask(newTask, currentUser));
-      setIsVisible(true);
       setTitle("");
       setDescription("");
       setTime("");

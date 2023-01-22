@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputWithLabel from "../shared/components/InputWithLabel";
 import { addItem } from "../store/actions/itemActions";
@@ -17,7 +17,6 @@ const AddNewVehicleForm = () => {
   const [modelError, setModelError] = useState(null);
   const [priceError, setPriceError] = useState(null);
   const [rangeError, setRangeError] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
   const user = useSelector((state) => state.auth?.userDetails);
   const localUser = JSON.parse(localStorage.getItem("user"));
   const currentUser = user?.isAdmin ?? localUser?.isAdmin;
@@ -44,7 +43,6 @@ const AddNewVehicleForm = () => {
 
     if (isFormValid) {
       dispatch(addItem(newVehicle, user));
-      setIsVisible(true);
       setMake("");
       setModel("");
       setPrice("");

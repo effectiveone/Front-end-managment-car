@@ -51,7 +51,6 @@ const TaskCardList = () => {
   const tasks = useSelector((state) => state.task?.backlogTasks);
   const user = useSelector((state) => state.auth.user);
   const localUser = JSON.parse(localStorage.getItem("user"));
-  const currentUser = user ?? localUser;
 
   const [currentCard, setCurrentCard] = useState(0);
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import uuid from "react-uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -12,6 +12,7 @@ import {
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItem, fetchItems } from "../../store/actions/itemActions";
+import TransitionsModal from "./TransitionsModal";
 
 const useStyles = makeStyles({
   root: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 function TableOfElectricCars() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(true);
 
   const items = useSelector((state) => state.item.items);
   const userAdmin = useSelector((state) => state.auth?.userDetails?.isAdmin);
@@ -39,6 +41,9 @@ function TableOfElectricCars() {
     dispatch(deleteItem(id, true));
   };
 
+  const handleVisibility = () => {
+    setOpen(!open);
+  };
   return (
     <>
       <Paper className={classes.root}>
@@ -61,13 +66,13 @@ function TableOfElectricCars() {
                 <TableCell>{item.range}</TableCell>
                 <TableCell>{item.price}</TableCell>
                 <TableCell>
-                  <button>Book</button>
+                  <button onClick={handleVisibility}>Book</button>
                 </TableCell>
                 {userAdmin && (
                   <>
                     {" "}
                     <TableCell>
-                      <div onClick={() => deleteExistItem(item.id)}>
+                      <div onClick={handleVisibility}>
                         <RiDeleteBin5Line />
                       </div>
                     </TableCell>{" "}
@@ -78,6 +83,7 @@ function TableOfElectricCars() {
           </TableBody>
         </Table>
       </Paper>
+      <TransitionsModal handleVisibility={handleVisibility} open={open} />
     </>
   );
 }

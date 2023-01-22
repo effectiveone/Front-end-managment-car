@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAnnouncements } from "../../store/actions/announcementActions";
 import { convertDate } from "../utils/helpers";
 import { Box, Typography, List, ListItem, makeStyles } from "@material-ui/core";
+import uuid from "react-uuid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,19 +40,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AnnoucmentBox() {
-  const [annons, setAnnons] = useState([]);
   const dispatch = useDispatch();
   const annoucments = useSelector((state) => state.annoucment?.announcements);
   const classes = useStyles();
-
-  const fetchData = async () => {
-    try {
-      const response = await dispatch(getAnnouncements());
-      setAnnons(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     dispatch(getAnnouncements());
@@ -61,7 +52,7 @@ function AnnoucmentBox() {
     <Box>
       <List className={classes.root}>
         {annoucments?.map((annoucment, index) => (
-          <ListItem key={annoucment.id} className={classes.listItem}>
+          <ListItem key={uuid()} className={classes.listItem}>
             <Typography variant="subtitle1" className={classes.title}>
               {annoucment?.title}
             </Typography>

@@ -13,7 +13,6 @@ const AddNewAnnouncement = () => {
   const [isFormValid, setIsFormValid] = useState(null);
   const [titleError, setTitleError] = useState(null);
   const [descriptionError, setDescriptionError] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
   const user = useSelector((state) => state.auth?.userDetails);
   const localUser = JSON.parse(localStorage.getItem("user"));
   const currentUser = user ?? localUser;
@@ -34,7 +33,6 @@ const AddNewAnnouncement = () => {
 
     if (isFormValid) {
       dispatch(addAnnouncement(newAnnouncement, currentUser));
-      setIsVisible(true);
       setTitle("");
       setDescription("");
     }

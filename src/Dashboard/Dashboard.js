@@ -24,7 +24,6 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   const items = useSelector((state) => state.item.items);
-  const userAdmin = useSelector((state) => state.auth?.userDetails?.isAdmin);
   useEffect(() => {
     if (!items.length) {
       dispatch(fetchItems());
