@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-
+import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -57,7 +57,13 @@ const TransitionsModal = ({
   const user = { token, mail };
   const [selectedDate, handleDateChange] = useState(new Date());
   const reservedSpots = useSelector((state) => state.item.reservations);
-
+  const handleDateChangeFunction = (date, isBook) => {
+    if (isBook) {
+      alert(`Asset on ${date} is booked`);
+    } else {
+      handleDateChange(date);
+    }
+  };
   const day = moment();
   const renderDay = (day, selectedDate, dayInCurrentMonth) => {
     const isBooked = reservedSpots.find((bookedDate) =>
@@ -79,7 +85,9 @@ const TransitionsModal = ({
           }}
         >
           <div
-            onClick={() => handleDateChange(day.format("YYYY-MM-DD"))}
+            onClick={() =>
+              handleDateChangeFunction(day.format("YYYY-MM-DD"), isBooked)
+            }
             style={{ transform: "translate(100%, 50%)" }}
           >
             {day.format("D")}
