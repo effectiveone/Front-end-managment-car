@@ -19,6 +19,7 @@ import {
 } from "../../store/actions/itemActions";
 import TransitionsModal from "./TransitionsModal";
 import { subtractCoins } from "../../store/actions/walletActions";
+
 import { openAlertMessage } from "../../store/actions/alertActions";
 
 const useStyles = makeStyles({
@@ -58,15 +59,17 @@ function TableOfElectricCars() {
     dispatch(openAlertMessage(message));
   };
 
-  const chargeTheWallet = (coins, mail, token) => {
-    dispatch(subtractCoins(coins, mail, token));
+  const chargeTheWallet = (coins, mail, token, title) => {
+    dispatch(subtractCoins(coins, mail, token, title));
   };
 
   const [currentId, setCurrentId] = useState();
   const [priceForCar, setPriceForCar] = useState();
-  const handleVisibility = (id, price) => {
+  const [title, setTitle] = useState();
+  const handleVisibility = (id, price, make, model) => {
     setOpen(!open);
     dispatch(fetchReservationsById(id));
+    setTitle(`${make} ${model}`);
     setCurrentId(id);
     setPriceForCar(price);
   };
@@ -103,6 +106,7 @@ function TableOfElectricCars() {
                       price={priceForCar}
                       displayAlert={displayAlert}
                       chargeTheWallet={chargeTheWallet}
+                      title={title}
                     />
                   </React.Fragment>
                   <TableRow key={id}>
@@ -112,7 +116,9 @@ function TableOfElectricCars() {
                     <TableCell>{price}</TableCell>
 
                     <TableCell>
-                      <button onClick={() => handleVisibility(id, price)}>
+                      <button
+                        onClick={() => handleVisibility(id, price, make, model)}
+                      >
                         Book
                       </button>
                     </TableCell>

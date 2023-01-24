@@ -15,12 +15,13 @@ export const initializeWallet = (mail) => async (dispatch) => {
 };
 
 // Add coins to a user's wallet
-export const addCoins = (coins, mail, token) => async (dispatch) => {
+export const addCoins = (coins, mail, token, title) => async (dispatch) => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   try {
     const res = await axios.post("http://localhost:5002/api/auth/addCoins", {
       coins,
       mail,
+      title,
     });
     dispatch({ type: "ADD_COINS", payload: res.data });
     dispatch(openAlertMessage("Coins added successfully!"));
@@ -29,23 +30,22 @@ export const addCoins = (coins, mail, token) => async (dispatch) => {
   }
 };
 
-export const subtractCoins = (coins, mail, token) => async (dispatch) => {
-  console.log(coins);
-  console.log(mail);
-  console.log(token);
-
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  try {
-    const res = await axios.post(
-      "http://localhost:5002/api/auth/subtractCoins",
-      {
-        coins,
-        mail,
-      }
-    );
-    dispatch({ type: SUBTRACT_COINS, payload: res.data });
-    // dispatch(openAlertMessage(`The account has been debited ${coins}`));
-  } catch (err) {
-    dispatch(openAlertMessage("Error adding coins: " + err));
-  }
-};
+export const subtractCoins =
+  (coins, mail, token, title) => async (dispatch) => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    try {
+      const res = await axios.post(
+        "http://localhost:5002/api/auth/subtractCoins",
+        {
+          coins,
+          mail,
+          title,
+        }
+      );
+      dispatch({ type: SUBTRACT_COINS, payload: res.data });
+      dispatch(openAlertMessage(`The account has been debited ${coins}`));
+    } catch (err) {
+      dispatch(openAlertMessage("Error adding coins: " + err));
+      console.log("Error adding coins: " + err);
+    }
+  };

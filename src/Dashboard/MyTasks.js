@@ -26,7 +26,12 @@ const onDragEnd = (
       ({ _id }) => _id === draggableId
     ).coinsToEarn;
 
-    handleGrantBonus(coins, mail, token);
+    const oldTitle = tasks.tasks?.find(({ _id }) => _id === draggableId).title;
+    const description = tasks.tasks?.find(
+      ({ _id }) => _id === draggableId
+    ).description;
+    const title = `${oldTitle} ${description}`;
+    handleGrantBonus(coins, mail, token, title);
   }
 
   if (source.droppableId !== destination.droppableId) {
@@ -79,8 +84,8 @@ function MyTasks() {
     dispatch(updateTask(_id, responsivePerson, status));
   };
 
-  const handleGrantBonus = (coins, mail, token) => {
-    dispatch(addCoins(coins, mail, token));
+  const handleGrantBonus = (coins, mail, token, title) => {
+    dispatch(addCoins(coins, mail, token, title));
   };
 
   useEffect(() => {

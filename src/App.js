@@ -11,6 +11,8 @@ import RegisterPage from "./authPages/RegisterPage/RegisterPage";
 import Dashboard from "./Dashboard/Dashboard";
 import AdminTaskTable from "./Dashboard/AdminTaskTable";
 
+import MyWallet from "./Dashboard/MyWallet";
+
 import AddNewVehicleForm from "./Dashboard/AddNewVehicleForm";
 import AddNewAnnouncement from "./Dashboard/AddNewAnnouncement";
 import AddNewTask from "./Dashboard/AddNewTask";
@@ -52,6 +54,9 @@ function App() {
           </Route>
           <Route exact path="/MyTasks">
             <MyTasks />
+          </Route>
+          <Route exact path="/MyWallet">
+            <MyWallet />
           </Route>
           <Route exact path="/AdminTaskTable">
             <AdminTaskTable />

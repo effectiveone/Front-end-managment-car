@@ -4,9 +4,7 @@ import Menu from "@mui/material/Menu";
 import { Link } from "react-router-dom";
 import { inHTMLData } from "xss-filters";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
 import { RiCoinsLine } from "react-icons/ri";
-import { initializeWallet } from "../../store/actions/walletActions";
 
 const useStyles = makeStyles({
   menu: {
@@ -19,22 +17,22 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   currentUser: {
-    transform: "translateX(100%)",
+    transform: "translateX(10%)",
   },
 });
 
-function Dropdown({ handleLogout, open, id, anchorEl, handleClose }) {
-  const dispatch = useDispatch();
-
+function Dropdown({
+  handleLogout,
+  open,
+  id,
+  anchorEl,
+  handleClose,
+  currentUserCoins,
+}) {
   const sanitizedUrl = inHTMLData("/editUser");
+  const sanitizedUrlWallet = inHTMLData("/MyWallet");
+
   const classes = useStyles();
-  const currentUserCoins = useSelector((state) => state.wallet.coins);
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    // if (!tasks?.tasks?.length) {
-    dispatch(initializeWallet(localUser.mail));
-    // }
-  }, []);
 
   return (
     <Menu
@@ -57,7 +55,11 @@ function Dropdown({ handleLogout, open, id, anchorEl, handleClose }) {
       <MenuItem component={Link} to={sanitizedUrl}>
         Profile
       </MenuItem>
-      <MenuItem className={classes.coinContainer}>
+      <MenuItem
+        className={classes.coinContainer}
+        component={Link}
+        to={sanitizedUrlWallet}
+      >
         <RiCoinsLine />
         <p className={classes.currentUser}>{currentUserCoins.coins}</p>
       </MenuItem>

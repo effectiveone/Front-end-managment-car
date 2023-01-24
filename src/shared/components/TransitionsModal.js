@@ -57,6 +57,7 @@ const TransitionsModal = ({
   updateItemReservations,
   id,
   price,
+  title,
 }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -74,6 +75,7 @@ const TransitionsModal = ({
       user,
       reservedSpots,
       selectedDate,
+      title,
     } = props;
     console.log(props);
 
@@ -98,7 +100,7 @@ const TransitionsModal = ({
       return;
     }
 
-    chargeTheWallet(coins, mail, token);
+    chargeTheWallet(coins, mail, token, title);
 
     updateItemReservations(id, { date: selectedDate }, user);
   };
@@ -196,6 +198,7 @@ const TransitionsModal = ({
                   user,
                   reservedSpots,
                   selectedDate,
+                  title,
                 })
               }
             >

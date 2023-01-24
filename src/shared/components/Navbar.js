@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-
+import { initializeWallet } from "../../store/actions/walletActions";
 import { AiOutlineMenu } from "react-icons/ai";
 import { MdAccountCircle } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,9 @@ export default function Navbar({
   let history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth?.userDetails);
+
+  const sanitizedUrlDashboard = inHTMLData("/dashboard");
+  const currentUserCoins = useSelector((state) => state.wallet.coins);
   const localUser = JSON.parse(localStorage.getItem("user"));
   const currentUser = user ?? localUser;
   const { logout } = getActions(dispatch);
@@ -40,8 +43,9 @@ export default function Navbar({
   const id = opendropdown ? "simple-popover" : undefined;
 
   const inputElement = useRef();
-
-  const sanitizedUrlDashboard = inHTMLData("/dashboard");
+  useEffect(() => {
+    dispatch(initializeWallet(localUser.mail));
+  }, []);
 
   return (
     <div
@@ -102,6 +106,7 @@ export default function Navbar({
               id={id}
               anchorEl={anchorEl}
               handleClose={handleClose}
+              currentUserCoins={currentUserCoins}
             />
           </Box>
         </Toolbar>
