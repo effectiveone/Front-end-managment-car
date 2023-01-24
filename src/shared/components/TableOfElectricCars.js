@@ -11,7 +11,12 @@ import {
 } from "@mui/material";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem, fetchAllCars } from "../../store/actions/itemActions";
+import {
+  deleteItem,
+  fetchAllCars,
+  updateReservation,
+  fetchReservationsById,
+} from "../../store/actions/itemActions";
 import TransitionsModal from "./TransitionsModal";
 
 const useStyles = makeStyles({
@@ -30,19 +35,31 @@ function TableOfElectricCars() {
   const [open, setOpen] = useState(false);
 
   const items = useSelector((state) => state.item.cars);
-  const userAdmin = useSelector((state) => state.auth?.userDetails?.isAdmin);
+  const userAdmin = localStorage.getItem("user");
+  const { token, mail, isAdmin } = userAdmin;
   useEffect(() => {
     if (!items?.length) {
       dispatch(fetchAllCars());
     }
-  }, [dispatch, items]);
+  }, []);
 
   const deleteExistItem = (id) => {
     dispatch(deleteItem(id, true));
   };
 
-  const handleVisibility = () => {
+  const updateItemReservations = (id, date, user) => {
+    dispatch(updateReservation(id, date, user));
+  };
+
+  const [currentId, setCurrentId] = useState();
+  const handleVisibility = (id) => {
     setOpen(!open);
+    dispatch(fetchReservationsById(id));
+    setCurrentId(id);
+  };
+
+  const handleCloseModal = (id) => {
+    setOpen(false);
   };
   return (
     <>
@@ -55,35 +72,47 @@ function TableOfElectricCars() {
               <TableCell>Range</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Book</TableCell>
-              {userAdmin && <TableCell>Delete</TableCell>}
+              {isAdmin && <TableCell>Delete</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
-            {items?.map((item) => (
-              <TableRow key={uuid()}>
-                <TableCell>{item.make}</TableCell>
-                <TableCell>{item.model}</TableCell>
-                <TableCell>{item.range}</TableCell>
-                <TableCell>{item.price}</TableCell>
-                <TableCell>
-                  <button onClick={handleVisibility}>Book</button>
-                </TableCell>
-                {userAdmin && (
-                  <>
-                    {" "}
+            {items?.map(({ id, make, model, range, price }) => {
+              return (
+                <>
+                  <React.Fragment>
+                    <TransitionsModal
+                      handleVisibility={handleCloseModal}
+                      open={open}
+                      token={token}
+                      mail={mail}
+                      id={currentId}
+                      updateItemReservations={updateItemReservations}
+                    />
+                  </React.Fragment>
+                  <TableRow key={id}>
+                    <TableCell>{make}</TableCell>
+                    <TableCell>{model}</TableCell>
+                    <TableCell>{range}</TableCell>
+                    <TableCell>{price}</TableCell>
+
                     <TableCell>
-                      <div onClick={handleVisibility}>
-                        <RiDeleteBin5Line />
-                      </div>
-                    </TableCell>{" "}
-                  </>
-                )}
-              </TableRow>
-            ))}
+                      <button onClick={() => handleVisibility(id)}>Book</button>
+                    </TableCell>
+                    {isAdmin && (
+                      <>
+                        {" "}
+                        <TableCell>
+                          <RiDeleteBin5Line />
+                        </TableCell>{" "}
+                      </>
+                    )}
+                  </TableRow>
+                </>
+              );
+            })}
           </TableBody>
         </Table>
       </Paper>
-      <TransitionsModal handleVisibility={handleVisibility} open={open} />
     </>
   );
 }

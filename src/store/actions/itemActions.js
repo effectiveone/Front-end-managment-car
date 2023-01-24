@@ -78,12 +78,12 @@ export const addItem = (item, user) => (dispatch) => {
     });
 };
 
-export const updateReservation = (id, updates, user) => (dispatch) => {
-  const { token } = user;
+export const updateReservation = (id, date, user) => (dispatch) => {
+  const { token, mail } = user;
   dispatch({ type: UPDATE_ITEM_START });
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   axios
-    .put(`http://localhost:5002/api/auth/update/${id}`, updates, token)
+    .put(`http://localhost:5002/api/auth/update/${id}`, date, mail, token)
     .then((res) => {
       dispatch({ type: UPDATE_ITEM_SUCCESS, payload: res.data });
       dispatch(openAlertMessage(res.data));

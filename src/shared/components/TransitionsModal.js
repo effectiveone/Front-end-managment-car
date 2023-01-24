@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
 import { Button } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import moment from "moment";
 import TextField from "@material-ui/core/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,62 +21,98 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  containerDates: {
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    gridTemplateRows: "repeat(5, 1fr)",
+    transform: "translateX(15px)",
+    width: "150px",
+    height: "50px",
+    gridColumnGap: "-20px ",
+    position: "relative",
+    "&:hover": {
+      background: "grey",
+    },
+  },
+  bookedDate: {
+    backgroundColor: "red",
+    borderRadius: "50%",
+    width: "10px",
+    height: "10px",
+    position: "absolute",
+    bottom: "20px",
+    right: "30px",
+  },
 }));
 
-const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
-  if (!selectedDates) {
-    return <PickersDay {...pickersDayProps} />;
-  }
-
-  const start = moment(date).startOf("week");
-  const end = moment(date).endOf("week");
-
-  const dayIsBetween = moment(date).isBetween(start, end, null, "[]");
-
-  const isFirstDay = moment(date).isSame(start, "day");
-  const isLastDay = moment(date).isSame(end, "day");
-
-  return (
-    <PickersDay
-      {...pickersDayProps}
-      disableMargin
-      dayIsBetween={dayIsBetween}
-      isFirstDay={isFirstDay}
-      isLastDay={isLastDay}
-    />
-  );
-};
-
-const TransitionsModal = ({ handleVisibility, open }) => {
+const TransitionsModal = ({
+  handleVisibility,
+  open,
+  token,
+  mail,
+  updateItemReservations,
+  id,
+}) => {
   const classes = useStyles();
+  const user = { token, mail };
   const [selectedDate, handleDateChange] = useState(new Date());
+  const reservedSpots = useSelector((state) => state.item.reservations);
+
+  const day = moment();
+  const renderDay = (day, selectedDate, dayInCurrentMonth) => {
+    const isBooked = reservedSpots.find((bookedDate) =>
+      moment(bookedDate.date).isSame(day, "day")
+    );
+
+    return (
+      <React.Fragment key={day.toDate().getTime()}>
+        <div
+          className={classes.containerDates}
+          onMouseEnter={() => {
+            classes.containerDates += " " + classes.containerDatesHover;
+          }}
+          onMouseLeave={() => {
+            classes.containerDates = classes.containerDates.replace(
+              " " + classes.containerDatesHover,
+              ""
+            );
+          }}
+        >
+          <div
+            onClick={() => handleDateChange(day.format("YYYY-MM-DD"))}
+            style={{ transform: "translate(100%, 50%)" }}
+          >
+            {day.format("D")}
+          </div>
+          {isBooked && <div className={classes.bookedDate} />}
+        </div>
+      </React.Fragment>
+    );
+  };
+
   return (
     <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
       className={classes.modal}
       open={open}
       onClose={handleVisibility}
       closeAfterTransition
-      BackdropComponent={Backdrop}
+      // BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
     >
       <Fade in={open}>
         <div className={classes.paper}>
-          <h2 id="transition-modal-title">Choose a week</h2>
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <StaticDatePicker
-              displayStaticWrapperAs="desktop"
-              label="Week picker"
-              value={selectedDate}
-              onChange={(newValue) => {
-                handleDateChange(newValue);
-              }}
-              renderDay={renderWeekPickerDay}
-              renderInput={(params) => <TextField {...params} />}
-              inputFormat="'Week of' MMM d"
+              renderInput={({ ref, ...other }) => (
+                <TextField inputRef={ref} {...other} />
+              )}
+              day={day.toDate()}
+              key={day.toDate().getTime()}
+              renderDay={renderDay}
+              onChange={handleDateChange}
+              selected={selectedDate}
             />
           </LocalizationProvider>
           <div
@@ -98,7 +132,10 @@ const TransitionsModal = ({ handleVisibility, open }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleVisibility}
+              disabled={reservedSpots?.includes(selectedDate.toString())}
+              onClick={() =>
+                updateItemReservations(id, { date: selectedDate }, user)
+              }
             >
               Save
             </Button>
@@ -108,4 +145,5 @@ const TransitionsModal = ({ handleVisibility, open }) => {
     </Modal>
   );
 };
+
 export default TransitionsModal;
