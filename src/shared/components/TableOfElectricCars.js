@@ -35,8 +35,9 @@ function TableOfElectricCars() {
   const [open, setOpen] = useState(false);
 
   const items = useSelector((state) => state.item.cars);
-  const userAdmin = localStorage.getItem("user");
+  const userAdmin = JSON.parse(localStorage.getItem("user"));
   const { token, mail, isAdmin } = userAdmin;
+
   useEffect(() => {
     if (!items?.length) {
       dispatch(fetchAllCars());
@@ -44,7 +45,7 @@ function TableOfElectricCars() {
   }, []);
 
   const deleteExistItem = (id) => {
-    dispatch(deleteItem(id, true));
+    dispatch(deleteItem(id, isAdmin));
   };
 
   const updateItemReservations = (id, date, user) => {
@@ -61,6 +62,7 @@ function TableOfElectricCars() {
   const handleCloseModal = (id) => {
     setOpen(false);
   };
+  console.log("isAdmin", isAdmin);
   return (
     <>
       <Paper className={classes.root}>
@@ -102,7 +104,9 @@ function TableOfElectricCars() {
                       <>
                         {" "}
                         <TableCell>
-                          <RiDeleteBin5Line />
+                          <div onClick={() => deleteExistItem(id)}>
+                            <RiDeleteBin5Line />
+                          </div>
                         </TableCell>{" "}
                       </>
                     )}
