@@ -100,7 +100,7 @@ const TransitionsModal = ({
       return;
     }
 
-    chargeTheWallet(coins, mail, token, title);
+    chargeTheWallet(coins, mail, token, title, selectedDate);
 
     updateItemReservations(id, { date: selectedDate }, user);
   };

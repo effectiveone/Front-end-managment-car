@@ -20,6 +20,7 @@ import MapWithEVStations from "./Dashboard/MapWithEVStations";
 import AlertNotification from "./shared/components/AlertNotification";
 import EditUser from "./Dashboard/EditUser";
 import MyTasks from "./Dashboard/MyTasks";
+import MyReservations from "./Dashboard/MyReservations";
 
 import "./App.css";
 
@@ -57,6 +58,9 @@ function App() {
           </Route>
           <Route exact path="/MyWallet">
             <MyWallet />
+          </Route>
+          <Route exact path="/MyReservations">
+            <MyReservations />
           </Route>
           <Route exact path="/AdminTaskTable">
             <AdminTaskTable />

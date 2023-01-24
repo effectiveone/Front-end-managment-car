@@ -133,6 +133,8 @@ function Layout({ children }) {
   const sanitizedUrlMapWithEVStations = inHTMLData("/MapWithEVStations");
   const sanitizedUrlAdminTaskTable = inHTMLData("/AdminTaskTable");
   const sanitizedUrlMyTasks = inHTMLData("/MyTasks");
+  const sanitizedUrlMyReservations = inHTMLData("/MyReservations");
+  const sanitizedUrlMyWallet = inHTMLData("/MyWallet");
 
   return (
     <>
@@ -219,6 +221,18 @@ function Layout({ children }) {
                   <MdAddCircleOutline />
                 </ListItemIcon>
                 <ListItemText primary="My Tasks" />
+              </ListItem>
+              <ListItem button component={Link} to={sanitizedUrlMyReservations}>
+                <ListItemIcon>
+                  <MdAddCircleOutline />
+                </ListItemIcon>
+                <ListItemText primary="My Reservations" />
+              </ListItem>
+              <ListItem button component={Link} to={sanitizedUrlMyWallet}>
+                <ListItemIcon>
+                  <MdAddCircleOutline />
+                </ListItemIcon>
+                <ListItemText primary="My Wallet" />
               </ListItem>
             </List>
           </Drawer>

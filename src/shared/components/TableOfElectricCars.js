@@ -59,8 +59,8 @@ function TableOfElectricCars() {
     dispatch(openAlertMessage(message));
   };
 
-  const chargeTheWallet = (coins, mail, token, title) => {
-    dispatch(subtractCoins(coins, mail, token, title));
+  const chargeTheWallet = (coins, mail, token, title, selectedDate) => {
+    dispatch(subtractCoins(coins, mail, token, title, selectedDate));
   };
 
   const [currentId, setCurrentId] = useState();

@@ -31,7 +31,7 @@ export const addCoins = (coins, mail, token, title) => async (dispatch) => {
 };
 
 export const subtractCoins =
-  (coins, mail, token, title) => async (dispatch) => {
+  (coins, mail, token, title, selectedDate) => async (dispatch) => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
       const res = await axios.post(
@@ -40,6 +40,7 @@ export const subtractCoins =
           coins,
           mail,
           title,
+          selectedDate,
         }
       );
       dispatch({ type: SUBTRACT_COINS, payload: res.data });
