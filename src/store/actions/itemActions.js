@@ -115,7 +115,8 @@ export const updateProperties = (id, updates, user) => (dispatch) => {
 };
 
 export const deleteItem = (id, user) => (dispatch) => {
-  const { token } = user;
+  const { token, isAdmin } = user;
+  if (!isAdmin) return;
   dispatch({ type: DELETE_CAR_START });
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   axios

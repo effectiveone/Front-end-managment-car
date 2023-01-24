@@ -18,6 +18,8 @@ import {
   fetchReservationsById,
 } from "../../store/actions/itemActions";
 import TransitionsModal from "./TransitionsModal";
+import { subtractCoins } from "../../store/actions/walletActions";
+import { openAlertMessage } from "../../store/actions/alertActions";
 
 const useStyles = makeStyles({
   root: {
@@ -52,17 +54,26 @@ function TableOfElectricCars() {
     dispatch(updateReservation(id, date, user));
   };
 
+  const displayAlert = (message) => {
+    dispatch(openAlertMessage(message));
+  };
+
+  const chargeTheWallet = (coins, mail, token) => {
+    dispatch(subtractCoins(coins, mail, token));
+  };
+
   const [currentId, setCurrentId] = useState();
-  const handleVisibility = (id) => {
+  const [priceForCar, setPriceForCar] = useState();
+  const handleVisibility = (id, price) => {
     setOpen(!open);
     dispatch(fetchReservationsById(id));
     setCurrentId(id);
+    setPriceForCar(price);
   };
 
   const handleCloseModal = (id) => {
     setOpen(false);
   };
-  console.log("isAdmin", isAdmin);
   return (
     <>
       <Paper className={classes.root}>
@@ -89,6 +100,9 @@ function TableOfElectricCars() {
                       mail={mail}
                       id={currentId}
                       updateItemReservations={updateItemReservations}
+                      price={priceForCar}
+                      displayAlert={displayAlert}
+                      chargeTheWallet={chargeTheWallet}
                     />
                   </React.Fragment>
                   <TableRow key={id}>
@@ -98,7 +112,9 @@ function TableOfElectricCars() {
                     <TableCell>{price}</TableCell>
 
                     <TableCell>
-                      <button onClick={() => handleVisibility(id)}>Book</button>
+                      <button onClick={() => handleVisibility(id, price)}>
+                        Book
+                      </button>
                     </TableCell>
                     {isAdmin && (
                       <>

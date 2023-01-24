@@ -8,7 +8,9 @@ import TextField from "@material-ui/core/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { openAlertMessage } from "../../store/actions/alertActions";
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -46,17 +48,58 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TransitionsModal = ({
+  chargeTheWallet,
+  displayAlert,
   handleVisibility,
   open,
   token,
   mail,
   updateItemReservations,
   id,
+  price,
 }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const user = { token, mail };
   const [selectedDate, handleDateChange] = useState(new Date());
   const reservedSpots = useSelector((state) => state.item.reservations);
+  const myWallet = useSelector((state) => state.wallet.coins.coins);
+  const SaveAndPayReservation = (props) => {
+    const {
+      myWallet,
+      coins,
+      mail,
+      token,
+      id,
+      user,
+      reservedSpots,
+      selectedDate,
+    } = props;
+    console.log(props);
+    const reservedOnSelectedDate = reservedSpots.filter(
+      (spot) => spot.date === selectedDate.toISOString()
+    );
+    if (!reservedSpots || !Array.isArray(reservedSpots)) {
+      console.error("reservedSpots is missing or not an array");
+      return;
+    }
+    console.log("reservedOnSelectedDate", reservedOnSelectedDate);
+    if (reservedOnSelectedDate) {
+      displayAlert(
+        `The asset is booked on ${selectedDate}, please choose another day`
+      );
+      return;
+    }
+
+    if (myWallet < coins) {
+      dispatch(openAlertMessage("You have not enough substractMoney to rent"));
+      return;
+    }
+
+    chargeTheWallet(coins, mail, token);
+
+    updateItemReservations(id, { date: selectedDate }, user);
+  };
   const handleDateChangeFunction = (date, isBook) => {
     if (isBook) {
       alert(`Asset on ${date} is booked`);
@@ -142,7 +185,16 @@ const TransitionsModal = ({
               color="primary"
               disabled={reservedSpots?.includes(selectedDate.toString())}
               onClick={() =>
-                updateItemReservations(id, { date: selectedDate }, user)
+                SaveAndPayReservation({
+                  myWallet,
+                  coins: parseFloat(price),
+                  mail,
+                  token,
+                  id,
+                  user,
+                  reservedSpots,
+                  selectedDate,
+                })
               }
             >
               Save

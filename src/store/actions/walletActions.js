@@ -29,7 +29,23 @@ export const addCoins = (coins, mail, token) => async (dispatch) => {
   }
 };
 
-export const subtractCoins = (amount) => ({
-  type: SUBTRACT_COINS,
-  amount,
-});
+export const subtractCoins = (coins, mail, token) => async (dispatch) => {
+  console.log(coins);
+  console.log(mail);
+  console.log(token);
+
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  try {
+    const res = await axios.post(
+      "http://localhost:5002/api/auth/subtractCoins",
+      {
+        coins,
+        mail,
+      }
+    );
+    dispatch({ type: SUBTRACT_COINS, payload: res.data });
+    // dispatch(openAlertMessage(`The account has been debited ${coins}`));
+  } catch (err) {
+    dispatch(openAlertMessage("Error adding coins: " + err));
+  }
+};
