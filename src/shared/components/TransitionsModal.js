@@ -76,15 +76,17 @@ const TransitionsModal = ({
       selectedDate,
     } = props;
     console.log(props);
-    const reservedOnSelectedDate = reservedSpots.filter(
-      (spot) => spot.date === selectedDate.toISOString()
-    );
+
     if (!reservedSpots || !Array.isArray(reservedSpots)) {
       console.error("reservedSpots is missing or not an array");
       return;
     }
-    console.log("reservedOnSelectedDate", reservedOnSelectedDate);
-    if (reservedOnSelectedDate) {
+
+    if (
+      reservedSpots.some((spot) =>
+        moment(spot.date).isSame(moment(selectedDate), "day")
+      )
+    ) {
       displayAlert(
         `The asset is booked on ${selectedDate}, please choose another day`
       );
