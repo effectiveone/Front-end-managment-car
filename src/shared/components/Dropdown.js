@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Link } from "react-router-dom";
-import { inHTMLData } from "xss-filters";
 import { makeStyles } from "@material-ui/core/styles";
 import { RiCoinsLine } from "react-icons/ri";
+import { sanitizedUrl } from "../../api";
 
 const useStyles = makeStyles({
   menu: {
@@ -29,9 +29,6 @@ function Dropdown({
   handleClose,
   currentUserCoins,
 }) {
-  const sanitizedUrl = inHTMLData("/editUser");
-  const sanitizedUrlWallet = inHTMLData("/MyWallet");
-
   const classes = useStyles();
 
   return (
@@ -52,13 +49,13 @@ function Dropdown({
       }}
       className={classes.menu}
     >
-      <MenuItem component={Link} to={sanitizedUrl}>
+      <MenuItem component={Link} to={sanitizedUrl.editUser}>
         Profile
       </MenuItem>
       <MenuItem
         className={classes.coinContainer}
         component={Link}
-        to={sanitizedUrlWallet}
+        to={sanitizedUrl.MyWallet}
       >
         <RiCoinsLine />
         <p className={classes.currentUser}>{currentUserCoins.coins}</p>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { logout } from "./shared/utils/auth";
+import { inHTMLData } from "xss-filters";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:5002/api",
@@ -56,4 +57,16 @@ const checkResponseCode = (exception) => {
   if (responseCode) {
     (responseCode === 401 || responseCode === 403) && logout();
   }
+};
+
+export const sanitizedUrl = {
+  Vehicle: inHTMLData("/addVehicle"),
+  Task: inHTMLData("/AddNewTask"),
+  Announcement: inHTMLData("/AddNewAnnouncement"),
+  MapWithEVStations: inHTMLData("/MapWithEVStations"),
+  AdminTaskTable: inHTMLData("/AdminTaskTable"),
+  MyTasks: inHTMLData("/MyTasks"),
+  MyReservations: inHTMLData("/MyReservations"),
+  MyWallet: inHTMLData("/MyWallet"),
+  editUser: inHTMLData("/editUser"),
 };

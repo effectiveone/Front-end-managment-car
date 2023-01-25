@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeWallet } from "../store/actions/walletActions";
+import useNestedRows from "../shared/utils/hooks/useNestedRows";
 
 const useStyles = makeStyles({
   table: {
@@ -34,6 +35,7 @@ const MyWallet = () => {
   }, [dispatch, localUser]);
 
   // Use the wallet and bankingOperations data here
+  const nestedRows = useNestedRows(wallet);
 
   return (
     <Layout>
@@ -43,15 +45,15 @@ const MyWallet = () => {
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
-
+              <TableCell> Change</TableCell>
               <TableCell>Previous Value</TableCell>
               <TableCell>New Value</TableCell>
-              <TableCell>Difference</TableCell>
               <TableCell>Date</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {wallet?.map((open) => (
+            {nestedRows}
+            {/* {wallet?.map((open) => (
               <React.Fragment key={open._id}>
                 <TableRow>
                   <TableCell>{open.title}</TableCell>
@@ -71,7 +73,7 @@ const MyWallet = () => {
                   <TableCell>{open?.date?.slice(0, 10)}</TableCell>
                 </TableRow>
               </React.Fragment>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </TableContainer>

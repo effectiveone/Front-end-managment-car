@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeWallet } from "../store/actions/walletActions";
+import useNestedRows from "../shared/utils/hooks/useNestedRows";
 
 const useStyles = makeStyles({
   table: {
@@ -32,6 +33,8 @@ const MyReservations = () => {
     dispatch(initializeWallet(localUser.mail));
   }, [dispatch, localUser]);
 
+  const nestedRows = useNestedRows(MyReservations);
+
   return (
     <Layout>
       <TableContainer component={Paper}>
@@ -39,13 +42,15 @@ const MyReservations = () => {
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
+              <TableCell>Date of Making Reservation</TableCell>
               <TableCell>Selected Date</TableCell>
               <TableCell>Coins</TableCell>
-              <TableCell>Date of Making Reservation</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {MyReservations?.map((open) => (
+            {nestedRows}
+
+            {/* {MyReservations?.map((open) => (
               <React.Fragment key={open._id}>
                 <TableRow>
                   <TableCell>{open.title}</TableCell>
@@ -56,7 +61,7 @@ const MyReservations = () => {
                   </TableCell>
                 </TableRow>
               </React.Fragment>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </TableContainer>
