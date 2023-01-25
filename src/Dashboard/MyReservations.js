@@ -24,8 +24,10 @@ const MyReservations = () => {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.auth?.userDetails);
 
-  const MyReservations = useSelector((state) => state.wallet.MyReservations);
-
+  const MyReservations = useSelector(
+    (state) => state.wallet.coins.MyReservations
+  );
+  console.log("MyReservations", MyReservations);
   useEffect(() => {
     dispatch(initializeWallet(localUser.mail));
   }, [dispatch, localUser]);
@@ -47,7 +49,7 @@ const MyReservations = () => {
               <React.Fragment key={open._id}>
                 <TableRow>
                   <TableCell>{open.title}</TableCell>
-                  <TableCell>{open.selectedDate}</TableCell>
+                  <TableCell>{open.selectedDate?.slice(0, 10)}</TableCell>
                   <TableCell>{open.coins}</TableCell>
                   <TableCell>
                     {open?.dateOfMakingReservation?.slice(0, 10)}

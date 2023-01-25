@@ -216,18 +216,19 @@ function Layout({ children }) {
                 </ListItemIcon>
                 <ListItemText primary="Ev Station" />
               </ListItem>
-              <ListItem button component={Link} to={sanitizedUrlMyTasks}>
-                <ListItemIcon>
-                  <MdAddCircleOutline />
-                </ListItemIcon>
-                <ListItemText primary="My Tasks" />
-              </ListItem>
               <ListItem button component={Link} to={sanitizedUrlMyReservations}>
                 <ListItemIcon>
                   <MdAddCircleOutline />
                 </ListItemIcon>
                 <ListItemText primary="My Reservations" />
               </ListItem>
+              <ListItem button component={Link} to={sanitizedUrlMyTasks}>
+                <ListItemIcon>
+                  <MdAddCircleOutline />
+                </ListItemIcon>
+                <ListItemText primary="My Tasks" />
+              </ListItem>
+
               <ListItem button component={Link} to={sanitizedUrlMyWallet}>
                 <ListItemIcon>
                   <MdAddCircleOutline />

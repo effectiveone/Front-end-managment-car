@@ -34,7 +34,6 @@ const MyWallet = () => {
   }, [dispatch, localUser]);
 
   // Use the wallet and bankingOperations data here
-  console.log(wallet);
 
   return (
     <Layout>
