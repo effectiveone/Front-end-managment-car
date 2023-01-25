@@ -12,13 +12,17 @@ import { MdAddCircleOutline } from "react-icons/md";
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from "react-icons/bs";
 import useStyles from "../../style";
 import useDrawer from "../utils/hooks/useDrawer";
+import { useTheme } from "@material-ui/core/styles";
+import { useSelector } from "react-redux";
 
 const DrawerComponent = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
+  const user = useSelector((state) => state?.auth?.userDetails);
 
-  const { open, handleDrawerOpen, handleDrawerClose, DrawerToogle } =
-    useDrawer();
+  const localUser = JSON.parse(localStorage.getItem("user"));
+  const { open, DrawerToogle } = useDrawer();
+  console.log("open", open);
   return (
     <>
       <Drawer

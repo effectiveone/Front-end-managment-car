@@ -8,8 +8,10 @@ import itemsReducer from "./reducers/itemReducer";
 import annoucmentReducer from "./reducers/announcementReducer";
 import taskReducer from "./reducers/taskReducer";
 import walletReducer from "./reducers/walletReducers";
+import drawerReducer from "./reducers/drawerReducer";
 
 const rootReducer = combineReducers({
+  drawer: drawerReducer,
   alert: alertReducer,
   annoucment: annoucmentReducer,
   auth: authReducer,

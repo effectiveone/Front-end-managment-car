@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleDrawer } from "../../../store/actions/drawerActions";
 
 const useDrawer = () => {
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const open = useSelector((state) => state.drawer.drawerState);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const DrawerToogle = () => {
-    setOpen(!open);
-  };
+  const DrawerToogle = useCallback(() => {
+    dispatch(toggleDrawer());
+  }, [dispatch]);
 
-  return { open, handleDrawerOpen, handleDrawerClose, DrawerToogle };
+  return {
+    open,
+    DrawerToogle,
+  };
 };
 
 export default useDrawer;

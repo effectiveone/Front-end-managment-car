@@ -12,13 +12,11 @@ import { getActions } from "../../store/actions/authActions";
 import { useHistory, Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { inHTMLData } from "xss-filters";
+import useDrawer from "../utils/hooks/useDrawer";
 
-export default function Navbar({
-  handleDrawerClose,
-  handleDrawerOpen,
-  open,
-  className,
-}) {
+export default function Navbar({ className }) {
+  const { open, DrawerToogle } = useDrawer();
+
   let history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth?.userDetails);
@@ -69,7 +67,7 @@ export default function Navbar({
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={handleDrawerOpen}
+              onClick={DrawerToogle}
               edge="start"
               sx={{
                 marginRight: 5,
