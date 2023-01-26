@@ -37,6 +37,7 @@ export const fetchBacklogTasks = () => async (dispatch) => {
 };
 
 export const addTask = (taskData, user) => async (dispatch) => {
+  console.log("taskData", taskData);
   const { isAdmin, token } = user;
   if (!isAdmin) return;
 
@@ -44,8 +45,7 @@ export const addTask = (taskData, user) => async (dispatch) => {
   try {
     const res = await axios.post(
       "http://localhost:5002/api/auth/tasks",
-      taskData,
-      token
+      taskData
     );
     dispatch({
       type: ADD_TASK,

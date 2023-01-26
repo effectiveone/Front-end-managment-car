@@ -22,7 +22,6 @@ const DrawerComponent = () => {
 
   const localUser = JSON.parse(localStorage.getItem("user"));
   const { open, DrawerToogle } = useDrawer();
-  console.log("open", open);
   return (
     <>
       <Drawer

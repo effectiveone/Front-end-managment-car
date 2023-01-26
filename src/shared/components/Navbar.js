@@ -11,17 +11,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getActions } from "../../store/actions/authActions";
 import { useHistory, Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
-import { inHTMLData } from "xss-filters";
 import useDrawer from "../utils/hooks/useDrawer";
+import { sanitizedUrl } from "../../api";
+import { useInitializeWallet } from "../utils/hooks/useInitializeWallet";
 
 export default function Navbar({ className }) {
   const { open, DrawerToogle } = useDrawer();
-
+  useInitializeWallet();
   let history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth?.userDetails);
-
-  const sanitizedUrlDashboard = inHTMLData("/dashboard");
   const currentUserCoins = useSelector((state) => state.wallet.coins);
   const localUser = JSON.parse(localStorage.getItem("user"));
   const currentUser = user ?? localUser;
@@ -41,9 +40,6 @@ export default function Navbar({ className }) {
   const id = opendropdown ? "simple-popover" : undefined;
 
   const inputElement = useRef();
-  useEffect(() => {
-    dispatch(initializeWallet(localUser.mail));
-  }, []);
 
   return (
     <div
@@ -79,7 +75,7 @@ export default function Navbar({ className }) {
 
             <Typography
               component={Link}
-              to={sanitizedUrlDashboard}
+              to={sanitizedUrl.Dashboard}
               variant="h6"
               noWrap
             >

@@ -69,4 +69,5 @@ export const sanitizedUrl = {
   MyReservations: inHTMLData("/MyReservations"),
   MyWallet: inHTMLData("/MyWallet"),
   editUser: inHTMLData("/editUser"),
+  Dashboard: inHTMLData("/dashboard"),
 };

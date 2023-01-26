@@ -84,10 +84,12 @@ const useStyles = makeStyles((theme) => ({
   contentClose: {
     width: `calc(100% - 300px)`,
     marginRight: "-10px",
+    padding: "20px 20px 20px 20px",
   },
   contentOpen: {
-    width: "100%",
+    width: `calc(100% - 100px)`,
     marginRight: "-10px",
+    padding: "20px 20px 20px 20px",
   },
 }));
 

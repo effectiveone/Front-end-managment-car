@@ -6,16 +6,18 @@ export const ADD_ANNOUNCEMENT = "ADD_ANNOUNCEMENT";
 export const GET_ANNOUNCEMENT = "GET_ANNOUNCEMENT";
 
 export const addAnnouncement = (announcement, user) => {
+  console.log("announcement", announcement);
   if (!user) return;
   const { isAdmin, token } = user;
   if (!isAdmin) return;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   return (dispatch) => {
     axios
-      .post("http://localhost:5002/api/auth/add-announcement", {
-        announcement,
-        token,
-      })
+      .post(
+        "http://localhost:5002/api/auth/add-announcement",
+        announcement
+        // token,
+      )
       .then((response) => {
         dispatch({
           type: ADD_ANNOUNCEMENT,

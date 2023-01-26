@@ -25,7 +25,14 @@ const AddNewVehicleForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newVehicle = { make, model, range, price };
+
+    const newVehicle = {
+      make,
+      model,
+      range,
+      price,
+    };
+
     setIsFormValid(validateVehicleForm({ make, model, range, price }));
 
     if (make.length < 3) {
@@ -34,15 +41,13 @@ const AddNewVehicleForm = () => {
     if (model.length < 3) {
       setModelError("Model should be at least 3 characters long");
     }
-    if (!price.endsWith("$")) {
-      setPriceError("Price should end with $");
-    }
+
     if (!range.endsWith("km")) {
       setRangeError("Range should end with km");
     }
 
     if (isFormValid) {
-      dispatch(addItem(newVehicle, user));
+      dispatch(addItem(newVehicle, localUser));
       setMake("");
       setModel("");
       setPrice("");

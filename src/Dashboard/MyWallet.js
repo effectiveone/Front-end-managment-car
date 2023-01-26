@@ -9,10 +9,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { useDispatch, useSelector } from "react-redux";
-import { initializeWallet } from "../store/actions/walletActions";
+import { useSelector } from "react-redux";
 import useNestedRows from "../shared/utils/hooks/useNestedRows";
-
+import { useInitializeWallet } from "../shared/utils/hooks/useInitializeWallet";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -21,20 +20,10 @@ const useStyles = makeStyles({
 
 const MyWallet = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  const user = useSelector((state) => state.auth?.userDetails);
-
+  useInitializeWallet();
   const wallet = useSelector((state) => state.wallet.coins.bankingOperations);
   const walletBalance = useSelector((state) => state.wallet.coins);
-  // const bankingOperations = useSelector(
-  //   (state) => state.wallet.wallet?.bankingOperations
-  // );
-  useEffect(() => {
-    dispatch(initializeWallet(localUser.mail));
-  }, [dispatch, localUser]);
 
-  // Use the wallet and bankingOperations data here
   const nestedRows = useNestedRows(wallet);
 
   return (

@@ -22,6 +22,7 @@ const AddNewAnnouncement = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const newAnnouncement = { title, description };
+
     setIsFormValid(validateAnnouncementForm({ title, description }));
 
     if (title.length < 3) {

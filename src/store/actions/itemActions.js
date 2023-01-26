@@ -63,11 +63,12 @@ export const fetchCarById = (id) => async (dispatch) => {
 };
 
 export const addItem = (item, user) => (dispatch) => {
+  console.log("item", item);
   const { token } = user;
   dispatch({ type: ADD_CAR_START });
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   axios
-    .post("http://localhost:5002/api/auth/add", item, token)
+    .post("http://localhost:5002/api/auth/add", item)
     .then((res) => {
       dispatch({ type: ADD_CAR_SUCCESS, payload: res.data });
       dispatch(openAlertMessage(res.data));

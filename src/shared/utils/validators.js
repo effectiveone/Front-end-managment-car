@@ -55,7 +55,7 @@ const validateRange = (range) => {
 };
 
 const validatePrice = (price) => {
-  return /^[0-9]+(\$)$/.test(price);
+  return /^[0-9]+$/.test(price);
 };
 
 export const validateAnnouncementForm = ({ title, description }) => {
