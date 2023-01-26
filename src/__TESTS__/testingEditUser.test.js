@@ -2,6 +2,7 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import EditUser from "../Dashboard/EditUser";
+import store from "../store/store";
 
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";

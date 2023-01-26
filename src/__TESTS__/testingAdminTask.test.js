@@ -35,10 +35,9 @@ describe("AdminTaskTable", () => {
 
   beforeEach(() => {
     jest.spyOn(useSelector, "useSelector").mockImplementation((selector) => {
-      if (selector === (state) => state.task.allTasks) {
-        return tasks;
+      if (selector === state => state.task.allTasks) {        return tasks;
       }
-      if (selector === (state) => state.auth.user) {
+      if (selector === state => state.auth.user) {
         return { isAdmin: true };
       }
     });

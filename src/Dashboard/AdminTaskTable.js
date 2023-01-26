@@ -58,24 +58,7 @@ export default function AdminTaskTable() {
                     <TableCell align="center">Created At</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {nestedRows}
-                  {/* {tasks?.map((task) => (
-                    <TableRow key={uuid()}>
-                      <TableCell component="th" scope="row">
-                        {task.title}
-                      </TableCell>
-                      <TableCell align="right">{task.description}</TableCell>
-                      <TableCell align="right">{task.coinsToEarn}</TableCell>
-                      <TableCell align="right">
-                        {task.responsivePerson}
-                      </TableCell>
-                      <TableCell align="right">{task.status}</TableCell>
-                      <TableCell align="right">{task.time}</TableCell>
-                      <TableCell align="right">{task.createdAt}</TableCell>
-                    </TableRow>
-                  ))} */}
-                </TableBody>
+                <TableBody>{nestedRows}</TableBody>
               </Table>
             </TableContainer>
           </Layout>

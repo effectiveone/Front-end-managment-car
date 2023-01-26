@@ -15,7 +15,6 @@ function Layout({ children }) {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const theme = useTheme();
   const classes = useStyles(theme);
-  const location = useLocation();
 
   const { open, handleDrawerOpen, handleDrawerClose, DrawerToogle } =
     useDrawer();

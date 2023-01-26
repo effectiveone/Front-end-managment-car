@@ -9,8 +9,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { useDispatch, useSelector } from "react-redux";
-import { initializeWallet } from "../store/actions/walletActions";
+import { useSelector } from "react-redux";
+import { useInitializeWallet } from "../shared/utils/hooks/useInitializeWallet";
 import useNestedRows from "../shared/utils/hooks/useNestedRows";
 
 const useStyles = makeStyles({
@@ -20,18 +20,11 @@ const useStyles = makeStyles({
 });
 
 const MyReservations = () => {
+  useInitializeWallet();
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  const user = useSelector((state) => state.auth?.userDetails);
-
   const MyReservations = useSelector(
     (state) => state.wallet.coins.MyReservations
   );
-  console.log("MyReservations", MyReservations);
-  useEffect(() => {
-    dispatch(initializeWallet(localUser.mail));
-  }, [dispatch, localUser]);
 
   const nestedRows = useNestedRows(MyReservations);
 

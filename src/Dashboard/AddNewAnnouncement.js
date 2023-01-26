@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputWithLabel from "../shared/components/InputWithLabel";
 import { addAnnouncement } from "../store/actions/announcementActions";
@@ -17,6 +17,7 @@ const AddNewAnnouncement = () => {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const currentUser = user ?? localUser;
   const dispatch = useDispatch();
+
   if (!user && !localUser) return;
 
   const handleSubmit = (event) => {

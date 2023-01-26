@@ -3,7 +3,8 @@ import uuid from "react-uuid";
 import Layout from "../shared/components/Layout";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTask, fetchMyTasks } from "../store/actions/taskActions";
+import { updateTask } from "../store/actions/taskActions";
+import useTaskList from "../shared/utils/hooks/useTaskList";
 import { addCoins } from "../store/actions/walletActions";
 
 const onDragEnd = (
@@ -22,12 +23,10 @@ const onDragEnd = (
   handleUpdateTask(draggableId, mail, destination.droppableId);
 
   if (destination.droppableId === "Done") {
-    const coins = tasks.tasks?.find(
-      ({ _id }) => _id === draggableId
-    ).coinsToEarn;
+    const coins = tasks?.find(({ _id }) => _id === draggableId).coinsToEarn;
 
-    const oldTitle = tasks.tasks?.find(({ _id }) => _id === draggableId).title;
-    const description = tasks.tasks?.find(
+    const oldTitle = tasks?.find(({ _id }) => _id === draggableId).title;
+    const description = tasks?.find(
       ({ _id }) => _id === draggableId
     ).description;
     const title = `${oldTitle} ${description}`;
@@ -70,15 +69,7 @@ const onDragEnd = (
 function MyTasks() {
   const dispatch = useDispatch();
 
-  const tasks = useSelector((state) => state.task?.myTasks);
-
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  const { mail, token } = localUser;
-  useEffect(() => {
-    // if (!tasks?.tasks?.length) {
-    dispatch(fetchMyTasks(localUser.mail));
-    // }
-  }, []);
+  const { myTasks: tasks, mail, token } = useTaskList();
 
   const handleUpdateTask = (_id, responsivePerson, status) => {
     dispatch(updateTask(_id, responsivePerson, status));
@@ -89,27 +80,27 @@ function MyTasks() {
   };
 
   useEffect(() => {
-    if (tasks?.tasks) {
+    if (tasks) {
       setColumns({
         ["Requested"]: {
           name: "Requested",
           background: "green",
-          items: tasks.tasks.filter((p) => p.status === "Requested"),
+          items: tasks.filter((p) => p.status === "Requested"),
         },
         ["To do"]: {
           name: "To do",
           background: "red",
-          items: tasks.tasks.filter((p) => p.status === "To do"),
+          items: tasks.filter((p) => p.status === "To do"),
         },
         ["In Progress"]: {
           name: "In Progress",
           background: "blue",
-          items: tasks.tasks.filter((p) => p.status === "In Progress"),
+          items: tasks.filter((p) => p.status === "In Progress"),
         },
         ["Done"]: {
           name: "Done",
           background: "purple",
-          items: tasks.tasks.filter((p) => p.status === "Done"),
+          items: tasks.filter((p) => p.status === "Done"),
         },
       });
     }
