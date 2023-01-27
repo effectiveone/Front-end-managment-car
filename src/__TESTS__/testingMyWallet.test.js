@@ -11,6 +11,7 @@ describe("MyWallet component", () => {
   let store;
   beforeEach(() => {
     store = mockStore({
+      drawer: { drawerState: true },
       wallet: {
         coins: {
           coins: 100,

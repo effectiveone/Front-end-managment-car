@@ -1,6 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import AdminTaskTable from "../Dashboard/AdminTaskTable";
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
 
+const mockStore = configureMockStore();
+const store = mockStore({
+  auth: { userDetails: { isAdmin: true } },
+  drawer: { drawerState: true },
+  wallet: { coins: 200 },
+});
 
 describe("AdminTaskTable", () => {
   const tasks = [
@@ -35,8 +43,9 @@ describe("AdminTaskTable", () => {
 
   beforeEach(() => {
     jest.spyOn(useSelector, "useSelector").mockImplementation((selector) => {
-      if (selector === state => state.task.allTasks) {        return tasks;
-      }
+      if (selector === state => state.task.allTasks) {
+        return tasks;
+        }
       if (selector === state => state.auth.user) {
         return { isAdmin: true };
       }
@@ -48,7 +57,11 @@ describe("AdminTaskTable", () => {
   });
 
   it("should display the tasks in a table", () => {
-    render(<AdminTaskTable />);
+    render(
+      <Provider store={store}>
+      <AdminTaskTable />
+    </Provider>
+    );
 
     tasks.forEach((task) => {
       expect(screen.getByText(task.title)).toBeInTheDocument();

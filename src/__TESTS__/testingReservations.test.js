@@ -12,6 +12,7 @@ describe("MyReservations component", () => {
 
   beforeEach(() => {
     store = mockStore({
+      drawer: { drawerState: true },
       wallet: {
         coins: {
           MyReservations: [

@@ -46,7 +46,7 @@ export const subtractCoins =
       dispatch({ type: SUBTRACT_COINS, payload: res.data });
       dispatch(openAlertMessage(`The account has been debited ${coins}`));
     } catch (err) {
-      dispatch(openAlertMessage("Error adding coins: " + err));
+      dispatch(openAlertMessage("Error SUBTRACT coins: " + err));
       console.log("Error adding coins: " + err);
     }
   };

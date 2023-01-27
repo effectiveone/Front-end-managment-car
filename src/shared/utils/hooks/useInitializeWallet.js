@@ -6,6 +6,8 @@ export const useInitializeWallet = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem("user"));
-    dispatch(initializeWallet(localUser.mail));
+    if (localUser && localUser.mail) {
+      dispatch(initializeWallet(localUser.mail));
+    }
   }, [dispatch]);
 };

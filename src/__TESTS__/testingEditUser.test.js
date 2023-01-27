@@ -22,6 +22,8 @@ describe("EditUser component", () => {
       auth: {
         userDetails: user,
       },
+      drawer: { drawerState: true },
+      wallet: { coins: 200 },
     });
   });
 

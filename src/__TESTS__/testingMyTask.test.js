@@ -32,13 +32,19 @@ const store = mockStore({
       ],
     },
   },
+  drawer: { drawerState: true },
+  wallet: { coins: 200 },
 });
 
 describe("MyTasks component", () => {
   afterEach(cleanup);
 
   it("Should display the tasks in the correct columns", () => {
-    const { getByTestId } = render(<MyTasks />);
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <MyTasks />
+      </Provider>
+    );
     const requestedColumn = getByTestId("Requested");
     const todoColumn = getByTestId("To do");
     const inProgressColumn = getByTestId("In Progress");
@@ -51,7 +57,11 @@ describe("MyTasks component", () => {
   });
 
   it("Should update the task status in the store when a task is moved to a different column", () => {
-    const { getByTestId } = render(<MyTasks />);
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <MyTasks />
+      </Provider>
+    );
     const requestedColumn = getByTestId("Requested");
     const todoColumn = getByTestId("To do");
     const taskId = requestedColumn.children[0].getAttribute("data-task-id");
@@ -64,7 +74,11 @@ describe("MyTasks component", () => {
   });
 
   it("Should add coins to the user's wallet when a task is moved to the Done column", () => {
-    const { getByTestId } = render(<MyTasks />);
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <MyTasks />
+      </Provider>
+    );
     const requestedColumn = getByTestId("Requested");
     const doneColumn = getByTestId("Done");
     const taskId = requestedColumn.children[0].getAttribute("data-task-id");

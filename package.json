@@ -27,7 +27,7 @@
     "react-konva": "^18.2.3",
     "react-list": "^0.8.17",
     "react-redux": "^7.2.5",
-    "react-router-dom": "^6.7.0",
+    "react-router-dom": "^6.8.0",
     "react-scripts": "4.0.3",
     "react-uuid": "^2.0.0",
     "react-virtuoso": "^4.0.3",

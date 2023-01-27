@@ -5,11 +5,12 @@ import RegisterPageInputs from "./RegisterPageInputs";
 import RegisterPageFooter from "./RegisterPageFooter";
 import { validateRegisterForm } from "../../shared/utils/validators";
 import { connect } from "react-redux";
+
 import { getActions } from "../../store/actions/authActions";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = ({ register }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [mail, setMail] = useState("");
   const [username, setUsername] = useState("");
@@ -24,7 +25,7 @@ const RegisterPage = ({ register }) => {
       username,
     };
 
-    register(userDetails, history);
+    register(userDetails, navigate);
   };
 
   useEffect(() => {

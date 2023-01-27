@@ -38,7 +38,7 @@ const setUserDetails = (userDetails) => {
   };
 };
 
-const login = (userDetails, history) => {
+const login = (userDetails, navigate) => {
   return async (dispatch) => {
     const response = await api.login(userDetails);
     if (response.error) {
@@ -48,12 +48,12 @@ const login = (userDetails, history) => {
       localStorage.setItem("user", JSON.stringify(userDetails));
       localStorage.setItem("token", userDetails.token);
       dispatch(setUserDetails(userDetails));
-      history.push("/dashboard");
+      navigate("/dashboard");
     }
   };
 };
 
-const register = (userDetails, history) => {
+const register = (userDetails, navigate) => {
   return async (dispatch) => {
     const response = await api.register(userDetails);
     console.log(response);
@@ -64,7 +64,7 @@ const register = (userDetails, history) => {
       localStorage.setItem("user", JSON.stringify(userDetails));
 
       dispatch(setUserDetails(userDetails));
-      history.push("/dashboard");
+      navigate("/dashboard");
     }
   };
 };

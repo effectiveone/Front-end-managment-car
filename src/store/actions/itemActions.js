@@ -80,18 +80,19 @@ export const addItem = (item, user) => (dispatch) => {
 };
 
 export const updateReservation = (id, date, user) => (dispatch) => {
-  const { token, mail } = user;
+  const { token } = user;
   dispatch({ type: UPDATE_ITEM_START });
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   axios
-    .put(`http://localhost:5002/api/auth/update/${id}`, date, mail, token)
+    .put(`http://localhost:5002/api/auth/update/${id}`, date)
     .then((res) => {
       dispatch({ type: UPDATE_ITEM_SUCCESS, payload: res.data });
       dispatch(openAlertMessage(res.data));
     })
     .catch((err) => {
+      console.log(err);
       dispatch({ type: UPDATE_ITEM_FAILURE, payload: err });
-      dispatch(openAlertMessage(err));
+      // dispatch(openAlertMessage(err));
     });
 };
 
