@@ -82,22 +82,22 @@ function MyTasks() {
   useEffect(() => {
     if (tasks) {
       setColumns({
-        ["Requested"]: {
+        "Requested": {
           name: "Requested",
           background: "green",
           items: tasks.filter((p) => p.status === "Requested"),
         },
-        ["To do"]: {
+        "To do": {
           name: "To do",
           background: "red",
           items: tasks.filter((p) => p.status === "To do"),
         },
-        ["In Progress"]: {
+        "In Progress": {
           name: "In Progress",
           background: "blue",
           items: tasks.filter((p) => p.status === "In Progress"),
         },
-        ["Done"]: {
+        "Done": {
           name: "Done",
           background: "purple",
           items: tasks.filter((p) => p.status === "Done"),

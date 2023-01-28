@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
 import LoginPage from "../../authPages/LoginPage/LoginPage";
-import { useLocation } from "react-router-dom";
 import { Container, CssBaseline } from "@material-ui/core";
 import clsx from "clsx";
 import useStyles from "../../style";

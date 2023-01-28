@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Layout from "../shared/components/Layout";
 import EVStationCard from "../shared/components/EVStationCard";
 import { makeStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   mapContainer: {
     height: "500px",
-    width: "700px",
+    width: "500px",
+    gap: "50px",
   },
 
   evCardsContainer: {
@@ -46,14 +48,13 @@ const MapWithEVStations = () => {
   const [map, setMap] = useState(null);
   const [mapCenter, setMapCenter] = useState({
     lat: 52.237049,
-    lng: 21.017532,
+    lng: 19.017532,
   });
   const [mapZoom, setMapZoom] = useState(6);
   const [EvChargeStations, setEvChargeStations] = useState([]);
-  const mapRef = useRef(null);
-  const [currentCard, setCurrentCard] = useState(0);
 
   useEffect(() => {
+    if (map) return;
     setMap(
       L.map("map", {
         center: mapCenter,
@@ -64,36 +65,9 @@ const MapWithEVStations = () => {
               '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           }),
         ],
-      }),
-      () => {
-        const fetchEVStations = async () => {
-          const apiKey = "513afb79-b078-45e1-b119-b72b1c684af1";
-          const apiUrl = `https://api.openchargemap.io/v3/poi/?output=json&countrycode=PL&maxresults=50&key=${apiKey}`;
-          const response = await fetch(apiUrl);
-          const data = await response.json();
-          return data;
-        };
-        const addMarkersToMap = (stations) => {
-          stations.forEach((station) => {
-            const marker = L.marker([
-              station.AddressInfo.Latitude,
-              station.AddressInfo.Longitude,
-            ]).addTo(map);
-            marker.bindPopup(
-              `<b>${station.AddressInfo.Title}</b> <br> ${station.AddressInfo.AddressLine1} <br> ${station.AddressInfo.Town} <br> ${station.AddressInfo.Postcode}`
-            );
-          });
-        };
-        fetchEVStations()
-          .then((stations) => {
-            addMarkersToMap(stations);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+      })
     );
-  }, []);
+  }, [map]);
 
   useEffect(() => {
     const fetchEVStations = async () => {
@@ -105,61 +79,46 @@ const MapWithEVStations = () => {
       return data;
     };
     const addMarkersToMap = (stations) => {
-      stations.forEach((station) => {
+      stations?.forEach((station) => {
         const marker = L.marker([
           station.AddressInfo.Latitude,
           station.AddressInfo.Longitude,
-        ]).addTo(map);
-        marker.bindPopup(
+        ])?.addTo(map);
+        marker?.bindPopup(
           `<b>${station.AddressInfo.Title}</b> <br> ${station.AddressInfo.AddressLine1} <br> ${station.AddressInfo.Town} <br> ${station.AddressInfo.Postcode}`
         );
       });
     };
     fetchEVStations()
-      .then((stations) => {
+      ?.then((stations) => {
         addMarkersToMap(stations);
+        setEvChargeStations(stations);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [map]);
-
-  useEffect(() => {
-    const filteredData = EvChargeStations?.filter(
-      (p) =>
-        p.AddressInfo.title &&
-        p.AddressInfo.AddressLine1 &&
-        p.AddressInfo.AccessComments
-    );
-    return filteredData.map((dat, ind) => (
-      <EVStationCard
-        key={ind}
-        title={dat.AddressInfo.Title}
-        address={dat.AddressInfo.AddressLine1}
-        access={dat.AddressInfo.AccessComments}
-      />
-    ));
-  }, [EvChargeStations]);
-
   return (
     <Layout>
-      <div style={{ display: "flex", flexDirection: "row", gap: "50px" }}>
-        <div>
+      <Grid container>
+        <Grid item xs={12} md={4} spacing={12}>
           <div id="map" className={classes.mapContainer} />
-        </div>
-        <div className={classes.evCardsContainer}>
-          {EvChargeStations?.map((dat, ind) => (
-            <EVStationCard
-              key={ind}
-              title={dat.AddressInfo.Title}
-              address={dat.AddressInfo.AddressLine1}
-              access={dat.AddressInfo.AccessComments}
-            />
-          ))}
-        </div>
-      </div>
+        </Grid>
+        <Grid md={2} />
+        <Grid item xs={12} md={4}>
+          <div className={classes.evCardsContainer}>
+            {EvChargeStations?.map((dat, ind) => (
+              <EVStationCard
+                key={ind}
+                title={dat.AddressInfo.Title}
+                address={dat.AddressInfo.AddressLine1}
+                access={dat.AddressInfo.AccessComments}
+              />
+            ))}
+          </div>
+        </Grid>
+      </Grid>
     </Layout>
   );
 };
-
 export default MapWithEVStations;
